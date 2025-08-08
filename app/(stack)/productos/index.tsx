@@ -1,0 +1,45 @@
+import { products } from '@/store/products.store';
+import { Link } from 'expo-router';
+import React from 'react';
+import { FlatList, Text, View } from 'react-native';
+
+const index = () => {
+  return (
+
+
+    <View className="flex flex-1 px-4">
+
+      <Text className="text-xl font-bold text-white">
+        Productos
+      </Text>
+
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View className='mt-10'>
+
+            <Text className='text-2xl font-work-black' >{item.title}</Text>
+            <Text className=''>{item.description}</Text>
+
+            <View className='flex flex-row justify-between mt-2'>
+              <Text className='font-work-black'>
+                {item.price}
+              </Text>
+              <Link className='text-primary' href={`/(stack)/productos/${item.id}`}>
+                Ver detalles
+              </Link>
+            </View>
+
+          </View>
+        )}
+      />
+
+
+    </View>
+
+
+  );
+}
+
+export default index
