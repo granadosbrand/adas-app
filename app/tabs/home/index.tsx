@@ -1,12 +1,11 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 
-const HomeScreen
-    = () => {
+const HomeScreen = () => {
         return (
             <View>
-                <Text>HomeScreen
-
+                <Text>
+                    HomeScreen
                 </Text>
             </View>
         )
