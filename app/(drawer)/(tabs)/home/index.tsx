@@ -1,10 +1,15 @@
 import SetButton from '@/components/set-home/SetButton';
-import React from 'react';
-import { SafeAreaView, View } from 'react-native';
+import React, { useState } from 'react';
+import { Animated, SafeAreaView, View } from 'react-native';
 
 const TOAST_DURATION = 1300;
 
 const HomeScreen = () => {
+
+    const [toastMsg, setToastMsg] = useState<string>('');
+
+// handlers
+
 
 
     return (
@@ -17,6 +22,8 @@ const HomeScreen = () => {
                 </Text> */}
             </View>
 
+
+          
 
         </SafeAreaView>
     );
