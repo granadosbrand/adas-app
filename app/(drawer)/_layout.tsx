@@ -2,15 +2,15 @@ import CustomDrawer from '@/components/shared/CustomDrawer';
 import { Ionicons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
-import { Text } from 'react-native';
 
 const DrawerLayout = () => {
     return (
         <Drawer
-        drawerContent={CustomDrawer}
+            drawerContent={CustomDrawer}
             screenOptions={{
                 overlayColor: 'rgba(0,0,0,0.5)',
                 drawerActiveTintColor: 'indigo',
+                // headerShown: false,
                 // drawerInactiveTintColor: 'white',
                 headerShadowVisible: false,
                 sceneStyle: {
@@ -25,6 +25,17 @@ const DrawerLayout = () => {
                     title: 'Usuario',
                     drawerIcon: ({ color, size }) => (
                         <Ionicons size={size} name="person-outline" color={color} />
+                    )
+                }}
+            />
+            <Drawer.Screen
+                name="(tabs)"
+                options={{
+                    headerShown: false,
+                    drawerLabel: 'Tabs + Stack',
+                    title: 'Tabs + Stack',
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="albums-outline" color={color} />
                     )
                 }}
             />

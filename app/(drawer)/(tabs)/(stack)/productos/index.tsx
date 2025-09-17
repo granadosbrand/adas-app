@@ -26,7 +26,7 @@ const index = () => {
               <Text className='font-work-black'>
                 {item.price}
               </Text>
-              <Link className='text-primary' href={`/(stack)/productos/${item.id}`}>
+              <Link className='text-primary' href={`/productos/${item.id}`}>
                 Ver detalles
               </Link>
             </View>

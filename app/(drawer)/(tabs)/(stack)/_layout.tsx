@@ -1,10 +1,22 @@
 
-import { SplashScreen, Stack } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { DrawerActions } from '@react-navigation/native'
+import { Stack, useNavigation, useRouter } from 'expo-router'
 import React from 'react'
 
-SplashScreen.preventAutoHideAsync()
-
 const StackLayout = () => {
+
+
+    const navigation = useNavigation()
+    const router = useRouter()
+
+    const onHeaderLeftClick = (canGoBack: boolean | undefined) => {
+        if (canGoBack) {
+            router.back()
+            return
+        }
+        navigation.dispatch(DrawerActions.toggleDrawer())
+    }
 
     return (
         <Stack
@@ -13,8 +25,17 @@ const StackLayout = () => {
                 headerShadowVisible: false,
                 contentStyle: {
                     backgroundColor: 'white'
-                }
+                },
+                headerLeft: ({ tintColor, canGoBack }) =>
+                    <Ionicons
+                        name={canGoBack ? 'arrow-back-outline' : 'menu'}
+                        className='mr-5'
+                        size={20}
+                        color={tintColor}
+                        onPress={() => onHeaderLeftClick(canGoBack)}
+                    />
             }}
+
         >
             <Stack.Screen
                 name='home/index'
