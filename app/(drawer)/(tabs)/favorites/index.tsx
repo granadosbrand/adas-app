@@ -1,14 +1,14 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const FavoritesScreen = () => {
+const Avance = () => {
   return (
     <View>
-      <Text>FavoritesScreen
+      <Text>asdf
     
       </Text>
     </View>
   )
 }
 
-export default FavoritesScreen
+export default Avance
