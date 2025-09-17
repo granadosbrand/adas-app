@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { Animated, Easing, Pressable, PressableProps, Text, View } from 'react-native';
+import * as Burnt from "burnt";
+import React, { useRef } from 'react';
+import { Animated, Pressable, PressableProps, Text, View } from 'react-native';
 import useRecordStore from '../../store/useRecords';
+
 
 interface Props extends PressableProps {
     color?: 'primary' | 'secondary' | 'tertiary';
@@ -56,7 +58,37 @@ const SetButton = ({ color = 'primary', variant = 'contained', className, ...pro
             Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }),
         ]).start();
 
-        //todo ejecutar toast
+        Burnt.toast({
+            title: "Muy bien, sigue adelante", // required
+
+            preset: "done", // or "error", "none", "custom"
+
+            message: "", // optional
+
+            haptic: "none", // or "success", "warning", "error"
+
+            duration: 2, // duration in seconds
+
+            shouldDismissByDrag: true,
+
+            from: "top", // "top" or "bottom"
+
+            // optionally customize layout
+            layout: {
+                iconSize: {
+                    height: 24,
+                    width: 24,
+                },
+            },
+            // icon: {
+            //     ios: {
+            //         // SF Symbol. For a full list, see https://developer.apple.com/sf-symbols/.
+            //         name: "checkmark.seal",
+            //         color: "#1D9BF0",
+            //     },
+            //     web: <Icon />,
+            // },
+        });
     };
 
 
@@ -86,7 +118,7 @@ const SetButton = ({ color = 'primary', variant = 'contained', className, ...pro
                 </Pressable>
             </Animated.View>
 
-           
+
 
 
         </View>

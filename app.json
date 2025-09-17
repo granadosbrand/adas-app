@@ -34,12 +34,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-build-properties",
-      {
-        "ios": {
-          "deploymentTarget": "13.0"
-        }
-      }
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true

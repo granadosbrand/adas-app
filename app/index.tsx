@@ -3,6 +3,10 @@ import "./global.css";
 
 export default function App() {
 
-  return <Redirect href='/home'  />
+  return (
+    <>
+      <Redirect href='/home' />
+    </>
+  )
 
 }

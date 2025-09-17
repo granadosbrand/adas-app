@@ -1,14 +1,14 @@
 import SetButton from '@/components/set-home/SetButton';
 import React, { useState } from 'react';
-import { Animated, SafeAreaView, View } from 'react-native';
-
-const TOAST_DURATION = 1300;
+import { SafeAreaView, View } from 'react-native';
 
 const HomeScreen = () => {
 
     const [toastMsg, setToastMsg] = useState<string>('');
 
-// handlers
+    // handlers
+
+
 
 
 
@@ -16,14 +16,16 @@ const HomeScreen = () => {
         <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
             <View className="flex-1 items-center justify-center px-6">
 
-                <SetButton />
+                <SetButton 
+                
+                />
                 {/* <Text className="mt-6 text-neutral-600 dark:text-neutral-300">
                     Total registros: <Text className="font-semibold">{timestamps.length}</Text>
                 </Text> */}
             </View>
 
 
-          
+
 
         </SafeAreaView>
     );
