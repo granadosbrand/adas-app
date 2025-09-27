@@ -26,46 +26,51 @@ const AvancesScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
       {/* Header */}
-      <View className="flex-row justify-between items-center px-4 py-3 border-b border-neutral-200 dark:border-neutral-700">
-        <Pressable onPress={openDrawer}>
-          <Ionicons name="menu" size={24} color="#6366f1" />
+      <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
+        <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
+          <Ionicons name="menu" size={20} color="#4f46e5" />
         </Pressable>
-        <Text className="text-lg font-work-medium">Mis Avances</Text>
-        <View style={{ width: 24 }} />
+        <Text className="text-lg font-work-medium text-neutral-800">Mis Avances</Text>
+        <View style={{ width: 32 }} />
       </View>
 
       <View className="flex-1 px-4">
         {/* Estadísticas principales */}
         <View className="flex-row justify-between mt-4 mb-6">
-          <View className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 flex-1 mr-2">
-            <Text className="text-2xl font-work-black text-blue-600 dark:text-blue-400">
+          <View className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-4 flex-1 mr-2 border border-primary-200">
+            <Text className="text-3xl font-work-black text-primary-600">
               {records.length}
             </Text>
-            <Text className="text-blue-600 dark:text-blue-400 font-work-medium">
+            <Text className="text-primary-600 font-work-medium text-sm">
               Total registros
             </Text>
           </View>
-          <View className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 flex-1 ml-2">
-            <Text className="text-2xl font-work-black text-green-600 dark:text-green-400">
+          <View className="bg-gradient-to-br from-growth-light to-secondary-100 rounded-xl p-4 flex-1 ml-2 border border-secondary-200">
+            <Text className="text-3xl font-work-black text-growth-dark">
               {records.length > 0 ? Math.ceil(records.length / 7) : 0}
             </Text>
-            <Text className="text-green-600 dark:text-green-400 font-work-medium">
+            <Text className="text-growth-dark font-work-medium text-sm">
               Semanas activo
             </Text>
           </View>
         </View>
 
         {/* Gráfico simple de barras */}
-        <View className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4 mb-6">
-          <Text className="text-lg font-work-black mb-4">Progreso Semanal</Text>
+        <View className="bg-white rounded-xl p-5 mb-6 border border-neutral-100 shadow-sm">
+          <View className="flex-row items-center mb-4">
+            <View className="bg-insight-light p-2 rounded-lg mr-3">
+              <Ionicons name="bar-chart" size={20} color="#8b5cf6" />
+            </View>
+            <Text className="text-lg font-work-black text-neutral-800">Progreso Semanal</Text>
+          </View>
           <View className="flex-row items-end justify-between h-32">
             {weekProgress.map((value, index) => (
               <View key={index} className="flex-1 items-center">
                 <View
-                  className="bg-indigo-500 rounded-t w-8"
-                  style={{ height: (value / 8) * 120 }}
+                  className="bg-gradient-to-t from-primary-600 to-primary-400 rounded-t-lg mx-1"
+                  style={{ height: (value / 8) * 120, minHeight: value > 0 ? 12 : 4 }}
                 />
-                <Text className="text-xs mt-2 text-neutral-600 dark:text-neutral-300">
+                <Text className="text-xs mt-2 text-neutral-500 font-work-medium">
                   {['L', 'M', 'X', 'J', 'V', 'S', 'D'][index]}
                 </Text>
               </View>

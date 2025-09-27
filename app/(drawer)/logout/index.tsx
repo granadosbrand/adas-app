@@ -27,26 +27,25 @@ const LogoutScreen = () => {
     return (
         <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
             <View className="flex-1 items-center justify-center px-6">
-                <Ionicons
-                    name="log-out-outline"
-                    size={80}
-                    color="#ef4444"
-                    style={{ marginBottom: 24 }}
-                />
-
-                <Text className="text-2xl font-work-black text-center mb-4">
-                    Cerrar Sesión
-                </Text>
-
-                <Text className="text-center text-neutral-600 dark:text-neutral-300 mb-8 font-work-medium">
-                    ¿Estás seguro que deseas cerrar sesión?{'\n'}
-                    Tus progresos se mantendrán guardados.
-                </Text>
-
-                <View className="w-full max-w-sm">
+        <View className="bg-warmth-light rounded-full p-6 mb-6">
+          <Ionicons
+            name="log-out-outline"
+            size={64}
+            color="#d97706"
+          />
+        </View>
+        
+        <Text className="text-2xl font-work-black text-center mb-4 text-neutral-800">
+          Cerrar Sesión
+        </Text>
+        
+        <Text className="text-center text-neutral-600 mb-8 font-work-medium text-base leading-6">
+          ¿Estás seguro que deseas cerrar sesión?{'\n'}
+          Tus progresos se mantendrán guardados.
+        </Text>                <View className="w-full max-w-sm">
                     <Pressable
                         onPress={handleLogout}
-                        className="bg-red-600 rounded-lg py-4 items-center mb-4 active:bg-red-700"
+                        className="bg-tertiary rounded-xl py-4 items-center mb-4 active:bg-tertiary-600 shadow-lg"
                     >
                         <Text className="text-white font-work-black text-lg">
                             Confirmar Cierre de Sesión
@@ -55,18 +54,18 @@ const LogoutScreen = () => {
 
                     <Pressable
                         onPress={() => {/* Navegar atrás o al home */ }}
-                        className="bg-neutral-200 dark:bg-neutral-700 rounded-lg py-4 items-center active:bg-neutral-300 dark:active:bg-neutral-600"
+                        className="bg-neutral-100 rounded-xl py-4 items-center active:bg-neutral-200 border border-neutral-300"
                     >
-                        <Text className="text-neutral-700 dark:text-neutral-200 font-work-black text-lg">
+                        <Text className="text-neutral-700 font-work-black text-lg">
                             Cancelar
                         </Text>
                     </Pressable>
                 </View>
 
-                <View className="mt-12 bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4">
-                    <Text className="text-sm text-neutral-600 dark:text-neutral-300 text-center">
-                        💡 Recuerda que tu progreso es valioso.{'\n'}
-                        Mantén el compromiso contigo mismo.
+                <View className="mt-12 bg-growth-light rounded-xl p-4 border-l-4 border-secondary">
+                    <Text className="text-sm text-growth-dark text-center font-work-medium">
+                        🌱 Recuerda que tu progreso es valioso.{'\n'}
+                        Cada paso cuenta en tu proceso de crecimiento.
                     </Text>
                 </View>
             </View>

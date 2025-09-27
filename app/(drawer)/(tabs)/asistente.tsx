@@ -14,46 +14,45 @@ const AsistenteScreen = () => {
     return (
         <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
             {/* Header */}
-            <View className="flex-row justify-between items-center px-4 py-3 border-b border-neutral-200 dark:border-neutral-700">
-                <Pressable onPress={openDrawer}>
-                    <Ionicons name="menu" size={24} color="#6366f1" />
+            <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
+                <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
+                    <Ionicons name="menu" size={20} color="#4f46e5" />
                 </Pressable>
-                <Text className="text-lg font-work-medium">Asistente IA</Text>
-                <View style={{ width: 24 }} />
+                <Text className="text-lg font-work-medium text-neutral-800">Asistente IA</Text>
+                <View style={{ width: 32 }} />
             </View>
 
             {/* Contenido principal */}
             <View className="flex-1 items-center justify-center px-6">
-                <Ionicons
-                    name="chatbubble-ellipses"
-                    size={80}
-                    color="#6366f1"
-                    style={{ marginBottom: 20 }}
-                />
-                <Text className="text-2xl font-work-black text-center mb-4">
+                <View className="bg-accent-light rounded-full p-6 mb-6">
+                    <Ionicons 
+                        name="chatbubble-ellipses" 
+                        size={64} 
+                        color="#8b5cf6" 
+                    />
+                </View>
+                <Text className="text-2xl font-work-black text-center mb-4 text-neutral-800">
                     Asistente Personal
                 </Text>
-                <Text className="text-center text-neutral-600 dark:text-neutral-300 font-work-medium">
+                <Text className="text-center text-neutral-600 font-work-medium text-base leading-6">
                     Próximamente tendrás acceso a un{'\n'}
                     asistente de IA que te ayudará en{'\n'}
-                    tu proceso de recuperación
-                </Text>
-
-                {/* Placeholder para el futuro chat */}
+                    tu proceso de reflexión y crecimiento
+                </Text>                {/* Placeholder para el futuro chat */}
                 <View className="mt-8 w-full max-w-sm">
-                    <View className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 mb-3">
-                        <Text className="text-neutral-500 italic">
+                    <View className="bg-insight-light rounded-xl p-4 mb-3 border-l-4 border-accent">
+                        <Text className="text-accent-dark font-work-medium">
                             "¿Cómo te sientes hoy?"
                         </Text>
                     </View>
-                    <View className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 mb-3">
-                        <Text className="text-neutral-500 italic">
-                            "¿Necesitas hablar sobre algo específico?"
+                    <View className="bg-warmth-light rounded-xl p-4 mb-3 border-l-4 border-tertiary">
+                        <Text className="text-tertiary-dark font-work-medium">
+                            "¿Qué has aprendido de ti mismo?"
                         </Text>
                     </View>
-                    <View className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4">
-                        <Text className="text-neutral-500 italic">
-                            "Estoy aquí para apoyarte"
+                    <View className="bg-growth-light rounded-xl p-4 border-l-4 border-secondary">
+                        <Text className="text-growth-dark font-work-medium">
+                            "Estoy aquí para acompañarte"
                         </Text>
                     </View>
                 </View>

@@ -8,13 +8,13 @@ const DrawerLayout = () => {
         <Drawer
             drawerContent={CustomDrawer}
             screenOptions={{
-                overlayColor: 'rgba(0,0,0,0.5)',
-                drawerActiveTintColor: 'indigo',
-                // headerShown: false,
-                // drawerInactiveTintColor: 'white',
+                overlayColor: 'rgba(79, 70, 229, 0.3)', // primary con transparencia
+                drawerActiveTintColor: '#4f46e5', // primary ADAS
+                drawerInactiveTintColor: '#6b7280', // neutral-500
                 headerShadowVisible: false,
+                headerTintColor: '#4f46e5',
                 sceneStyle: {
-                    backgroundColor: 'white',
+                    backgroundColor: '#f9fafb', // neutral-50
                 },
             }}
         >

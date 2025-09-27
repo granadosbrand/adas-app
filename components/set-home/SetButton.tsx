@@ -108,11 +108,11 @@ const SetButton = ({ color = 'primary', variant = 'contained', className, ...pro
                     accessibilityRole="button"
                     accessibilityLabel="Guardar fecha y hora"
                     // className= ""
-                    className={`w-40 h-40 rounded-full items-center justify-center bg-black/90 dark:bg-white/90 shadow-lg ${btnColor} active:opacity-90 ${className}`}
+                    className={`w-40 h-40 rounded-full items-center justify-center bg-gradient-to-br from-growth to-secondary-600 shadow-xl shadow-growth/30 active:shadow-lg ${className}`}
 
-                    android_ripple={{ color: 'rgba(255,255,255,0.2)', borderless: true }}
+                    android_ripple={{ color: 'rgba(255,255,255,0.3)', borderless: true }}
                 >
-                    <Text className="text-white dark:text-black text-3xl font-semibold tracking-widest">
+                    <Text className="text-white text-3xl font-work-black tracking-widest drop-shadow-sm">
                         SET
                     </Text>
                 </Pressable>

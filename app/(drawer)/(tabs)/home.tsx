@@ -15,20 +15,25 @@ const HomeScreen = () => {
     return (
         <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
             {/* Header */}
-            <View className="flex-row justify-between items-center px-4 py-3 border-b border-neutral-200 dark:border-neutral-700">
-                <Pressable onPress={openDrawer}>
-                    <Ionicons name="menu" size={24} color="#6366f1" />
+            <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
+                <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
+                    <Ionicons name="menu" size={20} color="#4f46e5" />
                 </Pressable>
-                <Text className="text-lg font-work-medium">Mi Progreso</Text>
-                <View style={{ width: 24 }} />
+                <Text className="text-lg font-work-medium text-neutral-800">Mi Progreso</Text>
+                <View style={{ width: 32 }} />
             </View>
 
             {/* Contenido principal */}
             <View className="flex-1 items-center justify-center px-6">
                 <SetButton />
-                <Text className="mt-8 text-center text-neutral-600 dark:text-neutral-300 font-work-medium">
-                    Presiona SET cuando hayas completado{'\n'}un paso hacia tu recuperación
-                </Text>
+                <View className="mt-8 bg-growth-light rounded-2xl p-6 mx-4">
+                    <Text className="text-center text-growth-dark font-work-medium text-base leading-6">
+                        Presiona SET cuando hayas completado{'\n'}un paso hacia tu recuperación
+                    </Text>
+                    <Text className="text-center text-growth text-sm font-work-medium mt-2">
+                        Cada paso cuenta en tu proceso de crecimiento 🌱
+                    </Text>
+                </View>
             </View>
         </SafeAreaView>
     );
