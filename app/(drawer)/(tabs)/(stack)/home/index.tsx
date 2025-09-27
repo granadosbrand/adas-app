@@ -25,9 +25,9 @@ const HomeScreen = () => {
       <CustomButton
         className='mb-5'
         color='primary'
-        onPress={() => router.push('/productos')}
+        onPress={() => router.push('/ayuda')}
       >
-        Productos
+        Ayuda
       </CustomButton>
 
       <CustomButton

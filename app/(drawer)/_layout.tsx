@@ -21,8 +21,8 @@ const DrawerLayout = () => {
             <Drawer.Screen
                 name="user/index"
                 options={{
-                    drawerLabel: 'User',
-                    title: 'Usuario',
+                    drawerLabel: 'Perfil',
+                    title: 'Perfil',
                     drawerIcon: ({ color, size }) => (
                         <Ionicons size={size} name="person-outline" color={color} />
                     )

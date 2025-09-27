@@ -56,13 +56,13 @@ const StackLayout = () => {
                 }}
             />
             <Stack.Screen
-                name='productos/index'
+                name='ayuda/index'
                 options={{
-                    title: 'Products Screen',
+                    title: 'Ayuda Screen',
                 }}
             />
             <Stack.Screen
-                name='productos/[id]'
+                name='ayuda/[id]'
                 options={{
                     title: 'Product',
                 }}
