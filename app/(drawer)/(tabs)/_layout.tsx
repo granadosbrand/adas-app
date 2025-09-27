@@ -4,34 +4,42 @@ import { Tabs } from 'expo-router';
 export default function TabLayout() {
     return (
         <Tabs screenOptions={{
-            tabBarActiveTintColor: 'primary',
-            // tabBarStyle: {
-            //     backgroundColor: 'black'
-            // },
-
+            tabBarActiveTintColor: '#6366f1',
+            tabBarInactiveTintColor: '#9ca3af',
+            tabBarStyle: {
+                backgroundColor: '#ffffff',
+                borderTopWidth: 1,
+                borderTopColor: '#e5e7eb',
+            },
         }}>
             <Tabs.Screen
-                name="(stack)"
+                name="asistente"
                 options={{
-                    title: 'Stack',
-                    tabBarIcon: ({ color }) => <Ionicons size={28} name="person-outline" color={color} />,
-                    headerShown: false,
-
-                }}
-            />
-            <Tabs.Screen
-                name="home/index"
-                options={{
-                    title: 'Home',
-                    tabBarIcon: ({ color }) => <Ionicons size={28} name="home-outline" color={color} />,
+                    title: 'Asistente',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="chatbubble-outline" color={color} />
+                    ),
                     headerShown: false,
                 }}
             />
             <Tabs.Screen
-                name="favorites/index"
+                name="home"
+                options={{
+                    title: 'Inicio',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="home" color={color} />
+                    ),
+                    headerShown: false,
+                }}
+            />
+            <Tabs.Screen
+                name="avances"
                 options={{
                     title: 'Avances',
-                    tabBarIcon: ({ color }) => <Ionicons size={28} name="grid-outline" color={color} />,
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="stats-chart-outline" color={color} />
+                    ),
+                    headerShown: false,
                 }}
             />
         </Tabs>

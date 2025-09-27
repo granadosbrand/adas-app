@@ -1,12 +1,9 @@
-
 import { Ionicons } from '@expo/vector-icons'
 import { DrawerActions } from '@react-navigation/native'
 import { Stack, useNavigation, useRouter } from 'expo-router'
 import React from 'react'
 
-const StackLayout = () => {
-
-
+const AyudaStackLayout = () => {
     const navigation = useNavigation()
     const router = useRouter()
 
@@ -35,41 +32,21 @@ const StackLayout = () => {
                         onPress={() => onHeaderLeftClick(canGoBack)}
                     />
             }}
-
         >
             <Stack.Screen
-                name='home/index'
+                name='index'
                 options={{
-                    title: 'Home Screen',
+                    title: 'Artículos de Ayuda',
                 }}
             />
             <Stack.Screen
-                name='profile/index'
+                name='[id]'
                 options={{
-                    title: 'Profile Screen',
-                }}
-            />
-            <Stack.Screen
-                name='settings/index'
-                options={{
-                    title: 'Settings Screen',
-                }}
-            />
-            <Stack.Screen
-                name='ayuda/index'
-                options={{
-                    title: 'Ayuda Screen',
-                }}
-            />
-            <Stack.Screen
-                name='ayuda/[id]'
-                options={{
-                    title: 'Product',
+                    title: 'Artículo',
                 }}
             />
         </Stack>
     )
-
 }
 
-export default StackLayout
+export default AyudaStackLayout

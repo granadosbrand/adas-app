@@ -19,33 +19,53 @@ const DrawerLayout = () => {
             }}
         >
             <Drawer.Screen
+                name="(tabs)"
+                options={{
+                    headerShown: false,
+                    drawerLabel: 'Inicio',
+                    title: 'Inicio',
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="home-outline" color={color} />
+                    )
+                }}
+            />
+            <Drawer.Screen
                 name="user/index"
                 options={{
-                    drawerLabel: 'Perfil',
-                    title: 'Perfil',
+                    drawerLabel: 'Mi Perfil',
+                    title: 'Mi Perfil',
                     drawerIcon: ({ color, size }) => (
                         <Ionicons size={size} name="person-outline" color={color} />
                     )
                 }}
             />
             <Drawer.Screen
-                name="(tabs)"
+                name="ayuda/index"
                 options={{
-                    headerShown: false,
-                    drawerLabel: 'Tabs + Stack',
-                    title: 'Tabs + Stack',
+                    drawerLabel: 'Artículos de Ayuda',
+                    title: 'Artículos de Ayuda',
                     drawerIcon: ({ color, size }) => (
-                        <Ionicons size={size} name="albums-outline" color={color} />
+                        <Ionicons size={size} name="library-outline" color={color} />
                     )
                 }}
             />
             <Drawer.Screen
-                name="schedule/index"
+                name="contacto/index"
                 options={{
-                    drawerLabel: 'Schedule',
-                    title: 'Schedules',
+                    drawerLabel: 'Contacto',
+                    title: 'Contacto',
                     drawerIcon: ({ color, size }) => (
-                        <Ionicons size={size} name="calendar-outline" color={color} />
+                        <Ionicons size={size} name="mail-outline" color={color} />
+                    )
+                }}
+            />
+            <Drawer.Screen
+                name="logout/index"
+                options={{
+                    drawerLabel: 'Cerrar Sesión',
+                    title: 'Cerrar Sesión',
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="log-out-outline" color={color} />
                     )
                 }}
             />
