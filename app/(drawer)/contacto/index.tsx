@@ -31,7 +31,7 @@ const ContactoScreen = () => {
     ];
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
+        <SafeAreaView className="flex-1 bg-neutral-50">
             <View className="flex-1 px-4">
         <View className="bg-gradient-to-r from-warmth-light to-growth-light rounded-xl p-4 mt-6 mb-8">
           <Text className="text-2xl font-work-black text-neutral-800 mb-2">
@@ -44,10 +44,10 @@ const ContactoScreen = () => {
                     <Pressable
                         key={index}
                         onPress={option.action}
-                        className="bg-white dark:bg-neutral-800 rounded-lg p-4 mb-4 border border-neutral-200 dark:border-neutral-700 active:bg-neutral-50 dark:active:bg-neutral-700"
+                        className="bg-white rounded-xl p-4 mb-4 border border-neutral-200 active:bg-primary-50 shadow-sm"
                     >
                         <View className="flex-row items-center">
-                            <View className="bg-indigo-100 dark:bg-indigo-900/30 rounded-full p-3 mr-4">
+                            <View className="bg-primary-100 rounded-full p-3 mr-4">
                                 <Ionicons
                                     name={option.icon as any}
                                     size={24}
@@ -58,7 +58,7 @@ const ContactoScreen = () => {
                                 <Text className="text-lg font-work-medium mb-1">
                                     {option.title}
                                 </Text>
-                                <Text className="text-neutral-600 dark:text-neutral-300">
+                                <Text className="text-neutral-600">
                                     {option.subtitle}
                                 </Text>
                             </View>
@@ -72,14 +72,14 @@ const ContactoScreen = () => {
                 ))}
 
                 {/* Mensaje de emergencia */}
-                <View className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 mt-8">
+                <View className="bg-emergency-light rounded-xl p-4 mt-8 border-l-4 border-emergency">
                     <View className="flex-row items-center mb-2">
                         <Ionicons name="warning-outline" size={20} color="#ef4444" />
-                        <Text className="text-red-600 dark:text-red-400 font-work-black ml-2">
+                        <Text className="text-emergency-dark font-work-black ml-2">
                             En caso de emergencia
                         </Text>
                     </View>
-                    <Text className="text-red-600 dark:text-red-400 mb-3">
+                    <Text className="text-emergency-dark mb-3 font-work-medium">
                         Si estás en crisis inmediata o tienes pensamientos de autolesión,
                         busca ayuda inmediatamente.
                     </Text>

@@ -13,7 +13,7 @@ const HomeScreen = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
+        <SafeAreaView className="flex-1 bg-neutral-50">
             {/* Header */}
             <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
                 <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">

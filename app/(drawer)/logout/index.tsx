@@ -25,7 +25,7 @@ const LogoutScreen = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
+        <SafeAreaView className="flex-1 bg-neutral-50">
             <View className="flex-1 items-center justify-center px-6">
         <View className="bg-warmth-light rounded-full p-6 mb-6">
           <Ionicons

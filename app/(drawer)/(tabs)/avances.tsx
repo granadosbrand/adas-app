@@ -1,9 +1,9 @@
 import useRecordStore from '@/store/useRecords';
-import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import { Dimensions, FlatList, Pressable, SafeAreaView, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const AvancesScreen = () => {
   const navigation = useNavigation();
@@ -19,12 +19,12 @@ const AvancesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
   const chartWidth = screenWidth - 32;
   const maxRecords = Math.max(records.length, 5);
-
+  
   // Simular progreso diario de la última semana
   const weekProgress = [3, 5, 2, 4, 6, 3, records.length % 8];
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900">
+    <SafeAreaView className="flex-1 bg-neutral-50">
       {/* Header */}
       <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
         <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
@@ -90,19 +90,19 @@ const AvancesScreen = () => {
             data={records}
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => (
-              <View className="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg mb-3">
+              <View className="bg-white p-4 rounded-xl mb-3 border border-neutral-200">
                 <View className="flex-row justify-between items-center">
                   <View className="flex-1">
-                    <Text className="text-lg font-work-medium">
+                    <Text className="text-lg font-work-medium text-neutral-800">
                       Registro #{records.length - index}
                     </Text>
-                    <Text className="text-neutral-600 dark:text-neutral-300">
+                    <Text className="text-neutral-600">
                       {item.label}
                     </Text>
                   </View>
                   <View className="ml-4">
                     <Text
-                      className="text-red-500 font-medium"
+                      className="text-tertiary-600 font-medium"
                       onPress={() => removeRecord(item.id)}
                     >
                       Eliminar
@@ -115,7 +115,7 @@ const AvancesScreen = () => {
               records.length > 0 ? (
                 <View className="mt-6 mb-4">
                   <Text
-                    className="text-red-500 font-medium text-center text-lg"
+                    className="text-tertiary-600 font-medium text-center text-lg"
                     onPress={clear}
                   >
                     Limpiar todos los registros

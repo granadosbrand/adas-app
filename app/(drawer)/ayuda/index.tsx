@@ -7,9 +7,9 @@ const index = () => {
   return (
 
 
-    <View className="flex flex-1 px-4">
+    <View className="flex flex-1 px-4 bg-neutral-50">
 
-      <View className="bg-gradient-to-r from-primary-50 to-insight-light rounded-xl p-4 mb-4">
+      <View className="bg-gradient-to-r from-primary-50 to-insight-light rounded-xl p-4 mb-4 mt-4">
         <Text className="text-2xl font-work-black text-neutral-800">
           Artículos de Ayuda
         </Text>
