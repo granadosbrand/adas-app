@@ -32,8 +32,8 @@ const index = () => {
                   {item.category}
                 </Text>
               </View>
-              <Link 
-                className='bg-primary text-white px-4 py-2 rounded-lg font-work-medium' 
+              <Link
+                className='bg-primary text-white px-4 py-2 rounded-lg font-work-medium'
                 href={`/ayuda/${item.id}`}
               >
                 Leer artículo

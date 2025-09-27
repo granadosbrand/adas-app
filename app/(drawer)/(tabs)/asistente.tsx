@@ -25,10 +25,10 @@ const AsistenteScreen = () => {
             {/* Contenido principal */}
             <View className="flex-1 items-center justify-center px-6">
                 <View className="bg-accent-light rounded-full p-6 mb-6">
-                    <Ionicons 
-                        name="chatbubble-ellipses" 
-                        size={64} 
-                        color="#8b5cf6" 
+                    <Ionicons
+                        name="chatbubble-ellipses"
+                        size={64}
+                        color="#8b5cf6"
                     />
                 </View>
                 <Text className="text-2xl font-work-black text-center mb-4 text-neutral-800">

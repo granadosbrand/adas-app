@@ -1,9 +1,9 @@
 import useRecordStore from '@/store/useRecords';
+import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import { Dimensions, FlatList, Pressable, SafeAreaView, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 const AvancesScreen = () => {
   const navigation = useNavigation();
@@ -19,7 +19,7 @@ const AvancesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
   const chartWidth = screenWidth - 32;
   const maxRecords = Math.max(records.length, 5);
-  
+
   // Simular progreso diario de la última semana
   const weekProgress = [3, 5, 2, 4, 6, 3, records.length % 8];
 

@@ -33,14 +33,14 @@ const ContactoScreen = () => {
     return (
         <SafeAreaView className="flex-1 bg-neutral-50">
             <View className="flex-1 px-4">
-        <View className="bg-gradient-to-r from-warmth-light to-growth-light rounded-xl p-4 mt-6 mb-8">
-          <Text className="text-2xl font-work-black text-neutral-800 mb-2">
-            ¿Necesitas Ayuda?
-          </Text>
-          <Text className="text-neutral-700 font-work-medium">
-            Estamos aquí para acompañarte. No estás solo en este proceso.
-          </Text>
-        </View>                {contactOptions.map((option, index) => (
+                <View className="bg-gradient-to-r from-warmth-light to-growth-light rounded-xl p-4 mt-6 mb-8">
+                    <Text className="text-2xl font-work-black text-neutral-800 mb-2">
+                        ¿Necesitas Ayuda?
+                    </Text>
+                    <Text className="text-neutral-700 font-work-medium">
+                        Estamos aquí para acompañarte. No estás solo en este proceso.
+                    </Text>
+                </View>                {contactOptions.map((option, index) => (
                     <Pressable
                         key={index}
                         onPress={option.action}

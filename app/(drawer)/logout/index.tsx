@@ -27,22 +27,22 @@ const LogoutScreen = () => {
     return (
         <SafeAreaView className="flex-1 bg-neutral-50">
             <View className="flex-1 items-center justify-center px-6">
-        <View className="bg-warmth-light rounded-full p-6 mb-6">
-          <Ionicons
-            name="log-out-outline"
-            size={64}
-            color="#d97706"
-          />
-        </View>
-        
-        <Text className="text-2xl font-work-black text-center mb-4 text-neutral-800">
-          Cerrar Sesión
-        </Text>
-        
-        <Text className="text-center text-neutral-600 mb-8 font-work-medium text-base leading-6">
-          ¿Estás seguro que deseas cerrar sesión?{'\n'}
-          Tus progresos se mantendrán guardados.
-        </Text>                <View className="w-full max-w-sm">
+                <View className="bg-warmth-light rounded-full p-6 mb-6">
+                    <Ionicons
+                        name="log-out-outline"
+                        size={64}
+                        color="#d97706"
+                    />
+                </View>
+
+                <Text className="text-2xl font-work-black text-center mb-4 text-neutral-800">
+                    Cerrar Sesión
+                </Text>
+
+                <Text className="text-center text-neutral-600 mb-8 font-work-medium text-base leading-6">
+                    ¿Estás seguro que deseas cerrar sesión?{'\n'}
+                    Tus progresos se mantendrán guardados.
+                </Text>                <View className="w-full max-w-sm">
                     <Pressable
                         onPress={handleLogout}
                         className="bg-tertiary rounded-xl py-4 items-center mb-4 active:bg-tertiary-600 shadow-lg"

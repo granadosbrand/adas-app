@@ -17,7 +17,7 @@ module.exports = {
       colors: {
         // Azul Serenidad - Primary (confianza y estabilidad)
         primary: {
-          50:  '#eef2ff',
+          50: '#eef2ff',
           100: '#e0e7ff',
           200: '#c7d2fe',
           300: '#a5b4fc',
@@ -32,7 +32,7 @@ module.exports = {
         },
         // Verde Crecimiento - Secondary (progreso y esperanza)
         secondary: {
-          50:  '#ecfdf5',
+          50: '#ecfdf5',
           100: '#d1fae5',
           200: '#a7f3d0',
           300: '#6ee7b7',
@@ -47,7 +47,7 @@ module.exports = {
         },
         // Ámbar Calidez - Tertiary (calidez y optimismo)
         tertiary: {
-          50:  '#fffbeb',
+          50: '#fffbeb',
           100: '#fef3c7',
           200: '#fde68a',
           300: '#fcd34d',
@@ -62,7 +62,7 @@ module.exports = {
         },
         // Púrpura Introspección - Accent (análisis y reflexión)
         accent: {
-          50:  '#f5f3ff',
+          50: '#f5f3ff',
           100: '#ede9fe',
           200: '#ddd6fe',
           300: '#c4b5fd',
@@ -77,7 +77,7 @@ module.exports = {
         },
         // Grises Empáticos - Neutrals
         neutral: {
-          50:  '#f9fafb',
+          50: '#f9fafb',
           100: '#f3f4f6',
           200: '#e5e7eb',
           300: '#d1d5db',
