@@ -1,3 +1,4 @@
+import RelapseButton from '@/components/RelapseButton';
 import SetButton from '@/components/set-home/SetButton';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
@@ -26,6 +27,7 @@ const HomeScreen = () => {
             {/* Contenido principal */}
             <View className="flex-1 items-center justify-center px-6">
                 <SetButton />
+                <RelapseButton />
                 <View className="mt-8 bg-growth-light rounded-2xl p-6 mx-4">
                     <Text className="text-center text-growth-dark font-work-medium text-base leading-6">
                         Presiona SET cuando hayas completado{'\n'}un paso hacia tu recuperación

@@ -1,8 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, Pressable, SafeAreaView, Text, View } from 'react-native';
+import useAuthStore from '../../../store/useAuthStore';
 
 const LogoutScreen = () => {
+    const { signOut } = useAuthStore();
+    const router = useRouter();
+
     const handleLogout = () => {
         Alert.alert(
             'Cerrar Sesión',
@@ -15,9 +20,13 @@ const LogoutScreen = () => {
                 {
                     text: 'Cerrar Sesión',
                     style: 'destructive',
-                    onPress: () => {
-                        // Placeholder - aquí iría la lógica de logout
-                        Alert.alert('Info', 'Funcionalidad en desarrollo');
+                    onPress: async () => {
+                        try {
+                            await signOut();
+                            router.replace('/');
+                        } catch {
+                            // Error ya manejado en el store
+                        }
                     },
                 },
             ]
@@ -42,7 +51,9 @@ const LogoutScreen = () => {
                 <Text className="text-center text-neutral-600 mb-8 font-work-medium text-base leading-6">
                     ¿Estás seguro que deseas cerrar sesión?{'\n'}
                     Tus progresos se mantendrán guardados.
-                </Text>                <View className="w-full max-w-sm">
+                </Text>
+
+                <View className="w-full max-w-sm">
                     <Pressable
                         onPress={handleLogout}
                         className="bg-tertiary rounded-xl py-4 items-center mb-4 active:bg-tertiary-600 shadow-lg"
@@ -53,7 +64,7 @@ const LogoutScreen = () => {
                     </Pressable>
 
                     <Pressable
-                        onPress={() => {/* Navegar atrás o al home */ }}
+                        onPress={() => router.back()}
                         className="bg-neutral-100 rounded-xl py-4 items-center active:bg-neutral-200 border border-neutral-300"
                     >
                         <Text className="text-neutral-700 font-work-black text-lg">
