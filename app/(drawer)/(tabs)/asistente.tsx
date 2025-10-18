@@ -40,7 +40,7 @@ const AsistenteScreen = () => {
                     asistente de IA que te ayudará en{'\n'}
                     tu proceso de reflexión y crecimiento
                 </Text>
-                
+
                 {/* Placeholder para el futuro chat */}
                 <View className="mt-8 w-full max-w-sm">
                     <View className="bg-insight-light rounded-xl p-4 mb-3 border-l-4 border-accent">

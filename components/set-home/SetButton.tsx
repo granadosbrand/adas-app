@@ -1,43 +1,19 @@
-import * as Burnt from "burnt";
+import * as Burnt from 'burnt';
+import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef } from 'react';
-import { Animated, Pressable, PressableProps, Text, View } from 'react-native';
+import { Animated, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import useRecordStore from '../../store/useRecords';
-
 
 interface Props extends PressableProps {
     color?: 'primary' | 'secondary' | 'tertiary';
-    variant?: 'contained' | 'outlined' | 'text-only'
+    variant?: 'contained' | 'outlined' | 'text-only';
     className?: string;
 }
 
-const TOAST_DURATION = 1300;
-
-
-const SetButton = ({ color = 'primary', variant = 'contained', className, ...props }: Props) => {
-
-    // Animaciones
+const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained', className: _className, ...props }: Props) => {
     const scale = useRef(new Animated.Value(1)).current;
-    const toastOpacity = useRef(new Animated.Value(0)).current;
-    const toastTranslate = useRef(new Animated.Value(10)).current; // aparece deslizándose hacia arriba
-
-    // store
     const addNow = useRecordStore((s) => s.addNow);
-    const getCount = useRecordStore((s) => s.getCount);
-
-    const btnColor = {
-        primary: 'bg-primary',
-        secondary: 'bg-secondary',
-        tertiary: 'bg-tertiary',
-    }[color]
-
-    const textColor = {
-        primary: 'text-primary',
-        secondary: 'text-secondary',
-        tertiary: 'text-tertiary',
-    }[color]
-
- 
-    // handlers
 
     const onPressIn = () => {
         Animated.spring(scale, { toValue: 0.96, useNativeDriver: true, bounciness: 0, speed: 20 }).start();
@@ -48,82 +24,104 @@ const SetButton = ({ color = 'primary', variant = 'contained', className, ...pro
     };
 
     const handleSet = () => {
-        // add record to global store
         addNow();
 
-        // Pulse de confirmación
         Animated.sequence([
             Animated.spring(scale, { toValue: 0.94, useNativeDriver: true, bounciness: 0, speed: 20 }),
             Animated.spring(scale, { toValue: 1.06, useNativeDriver: true, bounciness: 12, speed: 12 }),
             Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }),
         ]).start();
 
-        Burnt.toast({
-            title: "Muy bien, sigue adelante", // required
+        try {
+            Burnt.toast({
+                title: 'Muy bien, sigue adelante',
+                preset: 'done',
+                message: '',
+                haptic: 'none',
+                duration: 2,
+                shouldDismissByDrag: true,
+                from: 'top',
+            });
+        } catch {
+            // ignore
+        }
 
-            preset: "done", // or "error", "none", "custom"
-
-            message: "", // optional
-
-            haptic: "none", // or "success", "warning", "error"
-
-            duration: 2, // duration in seconds
-
-            shouldDismissByDrag: true,
-
-            from: "top", // "top" or "bottom"
-
-            // optionally customize layout
-            layout: {
-                iconSize: {
-                    height: 24,
-                    width: 24,
-                },
-            },
-            // icon: {
-            //     ios: {
-            //         // SF Symbol. For a full list, see https://developer.apple.com/sf-symbols/.
-            //         name: "checkmark.seal",
-            //         color: "#1D9BF0",
-            //     },
-            //     web: <Icon />,
-            // },
-        });
+        // Haptic feedback (small impact)
+        try {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        } catch {
+            // ignore if not available
+        }
     };
 
-
-
     return (
+        <View style={styles.container}>
+            <Animated.View style={[styles.animatedWrap, { transform: [{ scale }] }]}>
+                <LinearGradient colors={['#8b5cf6', '#06b6d4']} start={[0, 0]} end={[1, 1]} style={styles.gradient} />
 
-        <View>
-
-            <Animated.View
-                style={{ transform: [{ scale }] }}
-                className="w-44 h-44 rounded-full overflow-hidden"
-            >
                 <Pressable
                     onPress={handleSet}
                     onPressIn={onPressIn}
                     onPressOut={onPressOut}
                     accessibilityRole="button"
                     accessibilityLabel="Guardar fecha y hora"
-                    // className= ""
-                    className={`w-40 h-40 rounded-full items-center justify-center bg-gradient-to-br from-growth to-secondary-600 shadow-xl shadow-growth/30 active:shadow-lg ${className}`}
-
+                    style={styles.pressable}
                     android_ripple={{ color: 'rgba(255,255,255,0.3)', borderless: true }}
+                    {...props}
                 >
-                    <Text className="text-white text-3xl font-work-black tracking-widest drop-shadow-sm">
-                        SET
-                    </Text>
+                    <Text style={styles.label}>SET</Text>
                 </Pressable>
             </Animated.View>
-
-
-
-
         </View>
-
     );
-}
+};
 
-export default SetButton
+const SIZE = 160;
+
+const styles = StyleSheet.create({
+    container: {
+        width: SIZE,
+        height: SIZE,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: SIZE / 2, // ensure shadow follows circular shape
+        // Shadow + border to make the button stand out
+        shadowColor: '#8b5cf6',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.12,
+        shadowRadius: 18,
+        elevation: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.06)',
+    },
+    animatedWrap: {
+        width: SIZE,
+        height: SIZE,
+        borderRadius: SIZE / 2,
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    gradient: {
+        position: 'absolute',
+        width: SIZE,
+        height: SIZE,
+        borderRadius: SIZE / 2,
+    },
+    pressable: {
+        width: SIZE - 16,
+        height: SIZE - 16,
+        borderRadius: (SIZE - 16) / 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10,
+    },
+    label: {
+        color: '#fff',
+        fontSize: 32,
+        fontWeight: '800',
+        letterSpacing: 4,
+    },
+});
+
+export default SetButton;

@@ -25,15 +25,21 @@ const HomeScreen = () => {
             </View>
 
             {/* Contenido principal */}
-            <View className="flex-1 items-center justify-center px-6">
-                <SetButton />
-                <View className="mt-8 bg-growth-light rounded-2xl p-6 mx-4">
-                    <Text className="text-center text-growth-dark font-work-medium text-base leading-6">
-                        Presiona SET cuando hayas completado{'\n'}un paso hacia tu recuperación
-                    </Text>
-                    <Text className="text-center text-growth text-sm font-work-medium mt-2">
-                        Cada paso cuenta en tu proceso de crecimiento 🌱
-                    </Text>
+            <View className="flex-1 w-full px-6 justify-between">
+                {/* Center area for the main action */}
+                <View />
+
+                <View className="items-center">
+                    <SetButton />
+                </View>
+
+                {/* Bottom card */}
+                <View className="w-full pb-0">
+                    <View className="bg-growth-light rounded-2xl p-4 mx-4">
+                        <Text className="text-center text-growth text-sm font-work-medium mt-2">
+                            Cada paso cuenta en tu proceso de crecimiento 🌱
+                        </Text>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>
