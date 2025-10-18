@@ -2,7 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React from 'react';
-import { Pressable, SafeAreaView, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AsistenteScreen = () => {
     const navigation = useNavigation();
@@ -38,7 +39,9 @@ const AsistenteScreen = () => {
                     Próximamente tendrás acceso a un{'\n'}
                     asistente de IA que te ayudará en{'\n'}
                     tu proceso de reflexión y crecimiento
-                </Text>                {/* Placeholder para el futuro chat */}
+                </Text>
+                
+                {/* Placeholder para el futuro chat */}
                 <View className="mt-8 w-full max-w-sm">
                     <View className="bg-insight-light rounded-xl p-4 mb-3 border-l-4 border-accent">
                         <Text className="text-accent-dark font-work-medium">

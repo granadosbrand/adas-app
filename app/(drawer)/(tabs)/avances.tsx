@@ -1,9 +1,11 @@
+import { formatRelative } from '@/lib/dateUtils';
 import useRecordStore from '@/store/useRecords';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React from 'react';
-import { Dimensions, FlatList, Pressable, SafeAreaView, Text, View } from 'react-native';
+import { FlatList, Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AvancesScreen = () => {
   const navigation = useNavigation();
@@ -15,10 +17,7 @@ const AvancesScreen = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
-  // Datos para gráficos básicos
-  const screenWidth = Dimensions.get('window').width;
-  const chartWidth = screenWidth - 32;
-  const maxRecords = Math.max(records.length, 5);
+  // Datos para gráficos básicos (variables removidas porque no se usan actualmente)
 
   // Simular progreso diario de la última semana
   const weekProgress = [3, 5, 2, 4, 6, 3, records.length % 8];
@@ -97,7 +96,7 @@ const AvancesScreen = () => {
                       Registro #{records.length - index}
                     </Text>
                     <Text className="text-neutral-600">
-                      {item.label}
+                      {formatRelative(item.timestamp)}
                     </Text>
                   </View>
                   <View className="ml-4">

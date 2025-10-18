@@ -40,7 +40,7 @@ const DrawerLayout = () => {
                 }}
             />
             <Drawer.Screen
-                name="ayuda/index"
+                name="ayuda"
                 options={{
                     drawerLabel: 'Artículos de Ayuda',
                     title: 'Artículos de Ayuda',

@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Linking, Pressable, SafeAreaView, Text, View } from 'react-native';
+import { Linking, Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ContactoScreen = () => {
     const contactOptions = [
