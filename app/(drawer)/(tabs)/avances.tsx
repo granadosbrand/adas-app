@@ -17,8 +17,6 @@ const AvancesScreen = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
-  // Datos para gráficos básicos (variables removidas porque no se usan actualmente)
-
   // Simular progreso diario de la última semana
   const weekProgress = [3, 5, 2, 4, 6, 3, records.length % 8];
 
