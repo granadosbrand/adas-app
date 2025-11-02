@@ -1,9 +1,10 @@
+import { relapsesService } from '@/services/api';
+import useUserStore from '@/store/useUserStore';
 import * as Burnt from 'burnt';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Animated, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import useRecordStore from '../../store/useRecords';
 
 interface Props extends PressableProps {
     color?: 'primary' | 'secondary' | 'tertiary';
@@ -13,7 +14,8 @@ interface Props extends PressableProps {
 
 const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained', className: _className, ...props }: Props) => {
     const scale = useRef(new Animated.Value(1)).current;
-    const addNow = useRecordStore((s) => s.addNow);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const user = useUserStore((s) => s.user);
 
     const onPressIn = () => {
         Animated.spring(scale, { toValue: 0.96, useNativeDriver: true, bounciness: 0, speed: 20 }).start();
@@ -23,8 +25,51 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
         Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }).start();
     };
 
-    const handleSet = () => {
-        addNow();
+    const handleSet = async () => {
+        if (!user?.id) {
+            try {
+                Burnt.toast({
+                    title: 'Error',
+                    preset: 'error',
+                    message: 'Usuario no autenticado',
+                    haptic: 'error',
+                    duration: 2,
+                });
+            } catch {
+                // ignore
+            }
+            return;
+        }
+
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+
+        // Registrar recaída en la API
+        const now = new Date().toISOString();
+        const { data, error } = await relapsesService.createRelapse(user.id, {
+            occurred_at: now,
+            planned: false, // Las recaídas desde el botón SET son no planificadas
+        });
+
+        setIsSubmitting(false);
+
+        if (error || !data) {
+            try {
+                Burnt.toast({
+                    title: 'Error al registrar',
+                    preset: 'error',
+                    message: error?.message || 'Intenta nuevamente',
+                    haptic: 'error',
+                    duration: 3,
+                });
+            } catch {
+                // ignore
+            }
+            return;
+        }
+
+        // Animación de éxito
 
         Animated.sequence([
             Animated.spring(scale, { toValue: 0.94, useNativeDriver: true, bounciness: 0, speed: 20 }),

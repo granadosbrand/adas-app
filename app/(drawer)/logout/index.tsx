@@ -1,9 +1,14 @@
+import useUserStore from '@/store/useUserStore';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LogoutScreen = () => {
+    const logout = useUserStore((s) => s.logout);
+    const router = useRouter();
+
     const handleLogout = () => {
         Alert.alert(
             'Cerrar Sesión',
@@ -17,8 +22,8 @@ const LogoutScreen = () => {
                     text: 'Cerrar Sesión',
                     style: 'destructive',
                     onPress: () => {
-                        // Placeholder - aquí iría la lógica de logout
-                        Alert.alert('Info', 'Funcionalidad en desarrollo');
+                        logout();
+                        router.replace('/auth');
                     },
                 },
             ]
@@ -54,7 +59,7 @@ const LogoutScreen = () => {
                     </Pressable>
 
                     <Pressable
-                        onPress={() => {/* Navegar atrás o al home */ }}
+                        onPress={() => router.back()}
                         className="bg-neutral-100 rounded-xl py-4 items-center active:bg-neutral-200 border border-neutral-300"
                     >
                         <Text className="text-neutral-700 font-work-black text-lg">
