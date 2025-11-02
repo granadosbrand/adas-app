@@ -19,10 +19,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AuthScreen = () => {
     const [username, setUsername] = useState('');
-    const [userId, setUserId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
 
+    const setLoginData = useUserStore((s) => s.setLoginData);
     const setUser = useUserStore((s) => s.setUser);
     const router = useRouter();
 
@@ -76,12 +76,12 @@ const AuthScreen = () => {
     };
 
     const handleLogin = async () => {
-        if (!userId.trim()) {
+        if (!username.trim()) {
             try {
                 Burnt.toast({
                     title: 'Error',
                     preset: 'error',
-                    message: 'Ingresa tu ID de usuario',
+                    message: 'Ingresa tu nombre de usuario',
                     haptic: 'error',
                     duration: 2,
                 });
@@ -90,7 +90,9 @@ const AuthScreen = () => {
         }
 
         setIsLoading(true);
-        const { data, error } = await usersService.getUser(userId.trim());
+        const { data, error } = await usersService.login({
+            username: username.trim()
+        });
         setIsLoading(false);
 
         if (error || !data) {
@@ -98,7 +100,7 @@ const AuthScreen = () => {
                 Burnt.toast({
                     title: 'Usuario no encontrado',
                     preset: 'error',
-                    message: 'Verifica tu ID o crea una cuenta nueva',
+                    message: 'Verifica tu nombre de usuario o crea una cuenta nueva',
                     haptic: 'error',
                     duration: 3,
                 });
@@ -106,12 +108,19 @@ const AuthScreen = () => {
             return;
         }
 
-        setUser(data);
+        // Guardar toda la información del login
+        setLoginData({
+            user: data.user,
+            settings: data.settings,
+            mode: data.mode,
+            pendingCheckpoint: data.pending_checkpoint || null,
+        });
+
         try {
             Burnt.toast({
                 title: '¡Bienvenido de vuelta!',
                 preset: 'done',
-                message: `Hola ${data.username}`,
+                message: `Hola ${data.user.username}`,
                 haptic: 'success',
                 duration: 2,
             });
@@ -175,14 +184,14 @@ const AuthScreen = () => {
                                 // Login Form
                                 <>
                                     <Text className="text-lg font-work-black text-neutral-800 mb-4">
-                                        Ingresar con ID
+                                        Ingresar con Usuario
                                     </Text>
                                     <TextInput
                                         className="bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 mb-4 font-work-medium text-neutral-800"
-                                        placeholder="Ingresa tu ID de usuario"
+                                        placeholder="Ingresa tu nombre de usuario"
                                         placeholderTextColor="#9ca3af"
-                                        value={userId}
-                                        onChangeText={setUserId}
+                                        value={username}
+                                        onChangeText={setUsername}
                                         autoCapitalize="none"
                                         autoCorrect={false}
                                     />
@@ -230,7 +239,7 @@ const AuthScreen = () => {
                                     </Pressable>
                                     <View className="mt-4 bg-insight-light p-3 rounded-lg">
                                         <Text className="text-accent-dark text-sm font-work-medium">
-                                            💡 Guarda tu ID de usuario después de crear la cuenta
+                                            💡 Guarda tu nombre de usuario para futuras sesiones
                                         </Text>
                                     </View>
                                 </>

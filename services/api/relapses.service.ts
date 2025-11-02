@@ -1,6 +1,7 @@
 import {
     ApiError,
     CreateRelapseRequest,
+    CreateRelapseResponse,
     ListRelapsesParams,
     Relapse,
 } from '@/types/api.types';
@@ -16,8 +17,8 @@ export const relapsesService = {
     createRelapse: async (
         userId: string,
         request: CreateRelapseRequest
-    ): Promise<{ data?: Relapse; error?: ApiError }> => {
-        return apiClient.post<Relapse>(`/api/v1/users/${userId}/relapses`, request);
+    ): Promise<{ data?: CreateRelapseResponse; error?: ApiError }> => {
+        return apiClient.post<CreateRelapseResponse>(`/api/v1/users/${userId}/relapses`, request);
     },
 
     /**

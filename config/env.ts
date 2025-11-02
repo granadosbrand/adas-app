@@ -4,11 +4,13 @@ interface EnvConfig {
     API_BASE_URL: string;
 }
 
+/**
+ * Configuración de variables de entorno para Expo
+ * Lee desde expo-constants.extra que se configura en app.config.js
+ */
 const getEnvVars = (): EnvConfig => {
-    // Expo Constants lee del .env automáticamente en desarrollo
-    const apiBaseUrl = Constants.expoConfig?.extra?.API_BASE_URL ||
-        process.env.API_BASE_URL ||
-        'http://localhost:3000';
+    // expo-constants lee el 'extra' de app.config.js
+    const apiBaseUrl = Constants.expoConfig?.extra?.API_BASE_URL || 'http://localhost:8080';
 
     return {
         API_BASE_URL: apiBaseUrl,

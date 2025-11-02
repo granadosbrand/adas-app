@@ -20,6 +20,8 @@ class ApiClient {
     ): Promise<{ data?: T; error?: ApiError }> {
         const url = `${this.baseUrl}${endpoint}`;
 
+        console.log("url: ", url)
+
         try {
             const response = await fetch(url, {
                 ...options,
@@ -29,19 +31,23 @@ class ApiClient {
                 },
             });
 
-            const data = await response.json();
+            const responseData = await response.json();
 
             if (!response.ok) {
                 return {
                     error: {
-                        error: data.error || 'Request failed',
-                        message: data.message || `HTTP ${response.status}`,
-                        details: data,
+                        error: responseData.error || 'Request failed',
+                        message: responseData.message || `HTTP ${response.status}`,
+                        details: responseData,
                     },
                 };
             }
 
-            return { data };
+            // Tu API devuelve: { data: {...}, success: true }
+            // Extraemos el data interno si existe
+            const actualData = responseData.data !== undefined ? responseData.data : responseData;
+
+            return { data: actualData };
         } catch (error) {
             console.error('API Request Error:', error);
             return {

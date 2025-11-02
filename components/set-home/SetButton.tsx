@@ -3,7 +3,7 @@ import useUserStore from '@/store/useUserStore';
 import * as Burnt from 'burnt';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 
 interface Props extends PressableProps {
@@ -14,8 +14,31 @@ interface Props extends PressableProps {
 
 const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained', className: _className, ...props }: Props) => {
     const scale = useRef(new Animated.Value(1)).current;
+    const [countdown, setCountdown] = useState<number | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const countdownInterval = useRef<ReturnType<typeof setInterval> | null>(null);
+
     const user = useUserStore((s) => s.user);
+    const mode = useUserStore((s) => s.mode);
+    const setPendingCheckpoint = useUserStore((s) => s.setPendingCheckpoint);
+
+    const isSurvivorMode = mode === 'survivor';
+
+    // Limpiar interval al desmontar
+    useEffect(() => {
+        return () => {
+            if (countdownInterval.current) {
+                clearInterval(countdownInterval.current);
+            }
+        };
+    }, []);
+
+    // Cuando el countdown llega a 0, enviar
+    useEffect(() => {
+        if (countdown === 0) {
+            handleSubmit();
+        }
+    }, [countdown]);
 
     const onPressIn = () => {
         Animated.spring(scale, { toValue: 0.96, useNativeDriver: true, bounciness: 0, speed: 20 }).start();
@@ -25,31 +48,54 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
         Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }).start();
     };
 
-    const handleSet = async () => {
-        if (!user?.id) {
-            try {
-                Burnt.toast({
-                    title: 'Error',
-                    preset: 'error',
-                    message: 'Usuario no autenticado',
-                    haptic: 'error',
-                    duration: 2,
-                });
-            } catch {
-                // ignore
-            }
-            return;
-        }
+    const startCountdown = () => {
+        // Animación de presionado
+        Animated.sequence([
+            Animated.spring(scale, { toValue: 0.94, useNativeDriver: true, bounciness: 0, speed: 20 }),
+            Animated.spring(scale, { toValue: 1.06, useNativeDriver: true, bounciness: 12, speed: 12 }),
+            Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }),
+        ]).start();
 
-        if (isSubmitting) return;
+        // Haptic feedback
+        try {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        } catch { }
+
+        // Iniciar countdown de 3 segundos
+        setCountdown(3);
+        countdownInterval.current = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev === null || prev <= 1) {
+                    if (countdownInterval.current) {
+                        clearInterval(countdownInterval.current);
+                    }
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
+
+    const cancelCountdown = () => {
+        if (countdownInterval.current) {
+            clearInterval(countdownInterval.current);
+        }
+        setCountdown(null);
+
+        try {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        } catch { }
+    };
+
+    const handleSubmit = async () => {
+        if (!user?.id) return;
 
         setIsSubmitting(true);
+        setCountdown(null);
 
-        // Registrar recaída en la API
-        const now = new Date().toISOString();
         const { data, error } = await relapsesService.createRelapse(user.id, {
-            occurred_at: now,
-            planned: false, // Las recaídas desde el botón SET son no planificadas
+            occurred_at: new Date().toISOString(),
+            difficulty: isSurvivorMode ? 'medium' : undefined,
         });
 
         setIsSubmitting(false);
@@ -63,58 +109,83 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
                     haptic: 'error',
                     duration: 3,
                 });
-            } catch {
-                // ignore
-            }
+            } catch { }
             return;
         }
 
-        // Animación de éxito
+        // Actualizar checkpoint pendiente si viene uno nuevo
+        if (data.pending_checkpoint) {
+            setPendingCheckpoint(data.pending_checkpoint);
+        }
 
-        Animated.sequence([
-            Animated.spring(scale, { toValue: 0.94, useNativeDriver: true, bounciness: 0, speed: 20 }),
-            Animated.spring(scale, { toValue: 1.06, useNativeDriver: true, bounciness: 12, speed: 12 }),
-            Animated.spring(scale, { toValue: 1, useNativeDriver: true, bounciness: 8, speed: 12 }),
-        ]).start();
+        // Mostrar mensaje según clasificación
+        const { classification, checkpoint_reached } = data;
+        let message = '';
+        let title = 'Registrado';
+
+        if (checkpoint_reached) {
+            title = '🎉 ¡Checkpoint Alcanzado!';
+            message = `Llegaste ${classification.relation === 'early' ? 'temprano' : 'a tiempo'}`;
+        } else if (classification.relation === 'missed') {
+            title = 'Checkpoint perdido';
+            message = 'No te desanimes, sigue adelante';
+        } else {
+            title = 'Registrado exitosamente';
+            message = 'Sigue con tu progreso';
+        }
 
         try {
             Burnt.toast({
-                title: 'Muy bien, sigue adelante',
-                preset: 'done',
-                message: '',
-                haptic: 'none',
-                duration: 2,
-                shouldDismissByDrag: true,
-                from: 'top',
+                title,
+                preset: checkpoint_reached ? 'done' : 'none',
+                message,
+                haptic: checkpoint_reached ? 'success' : 'none',
+                duration: 3,
             });
-        } catch {
-            // ignore
-        }
-
-        // Haptic feedback (small impact)
-        try {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        } catch {
-            // ignore if not available
+        } catch { }
+    };
+
+    const handlePress = () => {
+        if (countdown !== null) {
+            // Si está en countdown, cancelar
+            cancelCountdown();
+        } else if (!isSubmitting) {
+            // Si no está en countdown ni enviando, iniciar countdown
+            startCountdown();
         }
+    };
+
+    // Determinar colores según estado
+    const getGradientColors = (): [string, string] => {
+        if (countdown !== null) return ['#ef4444', '#dc2626']; // Rojo para cancelar
+        if (isSubmitting) return ['#6b7280', '#4b5563']; // Gris para loading
+        return ['#8b5cf6', '#06b6d4']; // Normal
+    };
+
+    const getLabel = () => {
+        if (isSubmitting) return '...';
+        if (countdown !== null) return countdown.toString();
+        return 'SET';
     };
 
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.animatedWrap, { transform: [{ scale }] }]}>
-                <LinearGradient colors={['#8b5cf6', '#06b6d4']} start={[0, 0]} end={[1, 1]} style={styles.gradient} />
+                <LinearGradient colors={getGradientColors()} start={[0, 0]} end={[1, 1]} style={styles.gradient} />
 
                 <Pressable
-                    onPress={handleSet}
+                    onPress={handlePress}
                     onPressIn={onPressIn}
                     onPressOut={onPressOut}
                     accessibilityRole="button"
-                    accessibilityLabel="Guardar fecha y hora"
+                    accessibilityLabel={countdown !== null ? 'Cancelar registro' : 'Registrar recaída'}
                     style={styles.pressable}
                     android_ripple={{ color: 'rgba(255,255,255,0.3)', borderless: true }}
+                    disabled={isSubmitting}
                     {...props}
                 >
-                    <Text style={styles.label}>SET</Text>
+                    <Text style={styles.label}>{getLabel()}</Text>
                 </Pressable>
             </Animated.View>
         </View>

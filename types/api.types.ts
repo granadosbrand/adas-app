@@ -16,6 +16,21 @@ export interface CreateUserRequest {
 }
 
 // ============================================
+// Login Types
+// ============================================
+
+export interface LoginRequest {
+    username: string;
+}
+
+export interface LoginResponse {
+    user: User;
+    settings: UserSettings;
+    pending_checkpoint?: Checkpoint | null;
+    mode: ModeType;
+}
+
+// ============================================
 // Settings Types
 // ============================================
 
@@ -58,21 +73,35 @@ export interface Relapse {
     id: string;
     user_id: string;
     occurred_at: string;
-    planned: boolean;
+    planned?: boolean;
     difficulty?: RelapseDifficulty;
     checkpoint_id?: string;
     created_at: string;
 }
 
 export interface CreateRelapseRequest {
-    occurred_at: string; // ISO 8601 format
-    planned: boolean;
+    occurred_at: string; // UTC
+    planned?: boolean;
     difficulty?: RelapseDifficulty; // opcional si planned=false
 }
 
+export type RelapseRelation = 'reached' | 'early' | 'missed' | 'none';
+
+export interface RelapseClassification {
+    relation: RelapseRelation;
+    diff_minutes: number;
+}
+
+export interface CreateRelapseResponse {
+    relapse: Relapse;
+    classification: RelapseClassification;
+    checkpoint_reached?: string | null; // UUID del checkpoint alcanzado
+    pending_checkpoint?: Checkpoint | null; // Nuevo checkpoint creado
+}
+
 export interface ListRelapsesParams {
-    from?: string; // ISO 8601 format
-    to?: string;   // ISO 8601 format
+    from?: string; // UTC
+    to?: string;   // UTC
     limit?: number;
 }
 
@@ -101,7 +130,7 @@ export interface Checkpoint {
 }
 
 export interface CreateCheckpointRequest {
-    scheduled_for: string; // ISO 8601 format
+    scheduled_for: string; // UTC
     target_hours: number;
     origin_rule: OriginRule;
     status?: CheckpointStatus;
@@ -109,13 +138,13 @@ export interface CreateCheckpointRequest {
 
 export interface UpdateCheckpointStatusRequest {
     status: CheckpointStatus;
-    reached_at?: string | null; // ISO 8601 format, null permitido para missed
+    reached_at?: string | null; // UTC, null permitido para missed
 }
 
 export interface ListCheckpointsParams {
     status?: CheckpointStatus;
-    from?: string; // ISO 8601 format
-    to?: string;   // ISO 8601 format
+    from?: string; // UTC
+    to?: string;   // UTC
     limit?: number;
 }
 

@@ -1,6 +1,8 @@
 import {
     ApiError,
     CreateUserRequest,
+    LoginRequest,
+    LoginResponse,
     ModeResponse,
     UpdateSettingsRequest,
     User,
@@ -13,6 +15,13 @@ import apiClient from './client';
  */
 export const usersService = {
     /**
+     * POST /api/v1/login — Login con username
+     */
+    login: async (request: LoginRequest): Promise<{ data?: LoginResponse; error?: ApiError }> => {
+        return apiClient.post<LoginResponse>('/api/v1/login', request);
+    },
+
+    /**
      * POST /api/v1/users — Crear usuario
      */
     createUser: async (request: CreateUserRequest): Promise<{ data?: User; error?: ApiError }> => {
@@ -23,6 +32,7 @@ export const usersService = {
      * GET /api/v1/users/{userId} — Obtener usuario
      */
     getUser: async (userId: string): Promise<{ data?: User; error?: ApiError }> => {
+        console.log("user: ", userId)
         return apiClient.get<User>(`/api/v1/users/${userId}`);
     },
 
