@@ -95,6 +95,7 @@ export interface RelapseClassification {
 export interface CreateRelapseResponse {
     relapse: Relapse;
     classification: RelapseClassification;
+    mode: ModeType; // Modo actual después del relapse (puede haber cambiado)
     checkpoint_reached?: string | null; // UUID del checkpoint alcanzado
     pending_checkpoint?: Checkpoint | null; // Nuevo checkpoint creado
 }

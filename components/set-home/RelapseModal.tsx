@@ -25,6 +25,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
     const user = useUserStore((s) => s.user);
     const mode = useUserStore((s) => s.mode);
     const setPendingCheckpoint = useUserStore((s) => s.setPendingCheckpoint);
+    const setMode = useUserStore((s) => s.setMode);
 
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -61,6 +62,11 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                 });
             } catch { }
             return;
+        }
+
+        // Actualizar modo si cambió
+        if (data.mode) {
+            setMode(data.mode);
         }
 
         // Actualizar checkpoint pendiente si viene uno nuevo

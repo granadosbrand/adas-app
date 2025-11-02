@@ -21,6 +21,7 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
     const user = useUserStore((s) => s.user);
     const mode = useUserStore((s) => s.mode);
     const setPendingCheckpoint = useUserStore((s) => s.setPendingCheckpoint);
+    const setMode = useUserStore((s) => s.setMode);
 
     const isSurvivorMode = mode === 'survivor';
 
@@ -111,6 +112,11 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
                 });
             } catch { }
             return;
+        }
+
+        // Actualizar modo si cambió
+        if (data.mode) {
+            setMode(data.mode);
         }
 
         // Actualizar checkpoint pendiente si viene uno nuevo
