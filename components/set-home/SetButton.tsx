@@ -1,10 +1,10 @@
 import { relapsesService } from '@/services/api';
 import useUserStore from '@/store/useUserStore';
-import * as Burnt from 'burnt';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 interface Props extends PressableProps {
     color?: 'primary' | 'secondary' | 'tertiary';
@@ -102,12 +102,12 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
 
         if (error || !data) {
             try {
-                Burnt.toast({
-                    title: 'Error al registrar',
-                    preset: 'error',
-                    message: error?.message || 'Intenta nuevamente',
-                    haptic: 'error',
-                    duration: 3,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error al registrar',
+                    text2: error?.message || 'Intenta nuevamente',
+                    position: 'bottom',
+                    visibilityTime: 3000,
                 });
             } catch { }
             return;
@@ -135,12 +135,12 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
         }
 
         try {
-            Burnt.toast({
-                title,
-                preset: checkpoint_reached ? 'done' : 'none',
-                message,
-                haptic: checkpoint_reached ? 'success' : 'none',
-                duration: 3,
+            Toast.show({
+                type: checkpoint_reached ? 'success' : 'info',
+                text1: title,
+                text2: message,
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         } catch { }

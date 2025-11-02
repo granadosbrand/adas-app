@@ -1,7 +1,6 @@
 import { usersService } from '@/services/api';
 import useUserStore from '@/store/useUserStore';
 import { Ionicons } from '@expo/vector-icons';
-import * as Burnt from 'burnt';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -16,6 +15,7 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 const AuthScreen = () => {
     const [username, setUsername] = useState('');
@@ -29,12 +29,12 @@ const AuthScreen = () => {
     const handleCreateUser = async () => {
         if (!username.trim()) {
             try {
-                Burnt.toast({
-                    title: 'Error',
-                    preset: 'error',
-                    message: 'Ingresa un nombre de usuario',
-                    haptic: 'error',
-                    duration: 2,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: 'Ingresa un nombre de usuario',
+                    position: 'bottom',
+                    visibilityTime: 2000,
                 });
             } catch { }
             return;
@@ -50,12 +50,12 @@ const AuthScreen = () => {
 
         if (error || !data) {
             try {
-                Burnt.toast({
-                    title: 'Error al crear usuario',
-                    preset: 'error',
-                    message: error?.message || 'Intenta nuevamente',
-                    haptic: 'error',
-                    duration: 3,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error al crear usuario',
+                    text2: error?.message || 'Intenta nuevamente',
+                    position: 'bottom',
+                    visibilityTime: 3000,
                 });
             } catch { }
             return;
@@ -63,12 +63,12 @@ const AuthScreen = () => {
 
         setUser(data);
         try {
-            Burnt.toast({
-                title: '¡Bienvenido!',
-                preset: 'done',
-                message: `Usuario ${data.username} creado exitosamente`,
-                haptic: 'success',
-                duration: 2,
+            Toast.show({
+                type: 'success',
+                text1: '¡Bienvenido!',
+                text2: `Usuario ${data.username} creado exitosamente`,
+                position: 'bottom',
+                visibilityTime: 2000,
             });
         } catch { }
 
@@ -78,12 +78,12 @@ const AuthScreen = () => {
     const handleLogin = async () => {
         if (!username.trim()) {
             try {
-                Burnt.toast({
-                    title: 'Error',
-                    preset: 'error',
-                    message: 'Ingresa tu nombre de usuario',
-                    haptic: 'error',
-                    duration: 2,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: 'Ingresa tu nombre de usuario',
+                    position: 'bottom',
+                    visibilityTime: 2000,
                 });
             } catch { }
             return;
@@ -97,12 +97,12 @@ const AuthScreen = () => {
 
         if (error || !data) {
             try {
-                Burnt.toast({
-                    title: 'Usuario no encontrado',
-                    preset: 'error',
-                    message: 'Verifica tu nombre de usuario o crea una cuenta nueva',
-                    haptic: 'error',
-                    duration: 3,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Usuario no encontrado',
+                    text2: 'Verifica tu nombre de usuario o crea una cuenta nueva',
+                    position: 'bottom',
+                    visibilityTime: 3000,
                 });
             } catch { }
             return;
@@ -117,12 +117,12 @@ const AuthScreen = () => {
         });
 
         try {
-            Burnt.toast({
-                title: '¡Bienvenido de vuelta!',
-                preset: 'done',
-                message: `Hola ${data.user.username}`,
-                haptic: 'success',
-                duration: 2,
+            Toast.show({
+                type: 'success',
+                text1: '¡Bienvenido de vuelta!',
+                text2: `Hola ${data.user.username}`,
+                position: 'bottom',
+                visibilityTime: 2000,
             });
         } catch { }
 

@@ -3,7 +3,6 @@ import useUserStore from '@/store/useUserStore';
 import { RelapseDifficulty } from '@/types/api.types';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as Burnt from 'burnt';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import {
@@ -14,6 +13,7 @@ import {
     Text,
     View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 interface RelapseModalProps {
     visible: boolean;
@@ -52,12 +52,12 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
 
         if (error || !data) {
             try {
-                Burnt.toast({
-                    title: 'Error al registrar',
-                    preset: 'error',
-                    message: error?.message || 'Intenta nuevamente',
-                    haptic: 'error',
-                    duration: 3,
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error al registrar',
+                    text2: error?.message || 'Intenta nuevamente',
+                    position: 'bottom',
+                    visibilityTime: 3000,
                 });
             } catch { }
             return;
@@ -86,12 +86,12 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
         }
 
         try {
-            Burnt.toast({
-                title,
-                preset: checkpoint_reached ? 'done' : 'none',
-                message,
-                haptic: checkpoint_reached ? 'success' : 'none',
-                duration: 3,
+            Toast.show({
+                type: checkpoint_reached ? 'success' : 'info',
+                text1: title,
+                text2: message,
+                position: 'bottom',
+                visibilityTime: 3000,
             });
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         } catch { }

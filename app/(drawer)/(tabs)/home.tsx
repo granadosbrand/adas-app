@@ -14,7 +14,7 @@ const HomeScreen = () => {
     const user = useUserStore((s) => s.user);
     const mode = useUserStore((s) => s.mode);
     const pendingCheckpoint = useUserStore((s) => s.pendingCheckpoint);
-    
+
     const [showPastEventModal, setShowPastEventModal] = useState(false);
 
     const openDrawer = () => {
@@ -76,7 +76,7 @@ const HomeScreen = () => {
                     <Text className="text-neutral-600 font-work-medium text-sm mt-4">
                         Presiona para registrar
                     </Text>
-                    
+
                     {/* Botón para eventos pasados */}
                     <Pressable
                         onPress={() => setShowPastEventModal(true)}
@@ -98,7 +98,7 @@ const HomeScreen = () => {
                     </View>
                 </View>
             </ScrollView>
-            
+
             {/* Modal para eventos pasados */}
             <RelapseModal
                 visible={showPastEventModal}

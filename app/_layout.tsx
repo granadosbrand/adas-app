@@ -2,8 +2,8 @@ import { useFonts } from 'expo-font';
 import { Slot, SplashScreen } from 'expo-router';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import './global.css';
-import { Toaster } from 'burnt/web';
 
 SplashScreen.preventAutoHideAsync()
 
@@ -29,8 +29,7 @@ const RootLayout = () => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Slot />
-            <Toaster position='bottom-right' />
-
+            <Toast />
         </GestureHandlerRootView>
     )
 }
