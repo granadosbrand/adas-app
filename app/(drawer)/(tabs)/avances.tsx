@@ -76,26 +76,21 @@ const AvancesScreen = () => {
     loadData(true);
   };
 
-  // Progreso de últimos 7 días completos (Lun-Dom)
+  // Progreso de últimos 7 días completos (de hoy hacia atrás)
   const getWeekProgress = () => {
     const today = dayjs();
-    const weekData = [0, 0, 0, 0, 0, 0, 0]; // L, M, X, J, V, S, D
-    const weekLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-
-    // Calcular el inicio de la semana (último lunes)
-    const startOfWeek = today.startOf('week').add(1, 'day'); // dayjs week starts on Sunday, shift to Monday
+    const weekData = [0, 0, 0, 0, 0, 0, 0]; // Hoy, Ayer, -2, -3, -4, -5, -6 días
+    const weekLabels = ['Hoy', 'Ayer', '2d', '3d', '4d', '5d', '6d'];
 
     relapses.forEach((relapse) => {
       const relapseDate = dayjs(relapse.occurred_at);
 
-      // Solo contar si está en los últimos 7 días
+      // Calcular diferencia en días desde hoy
       const daysDiff = today.diff(relapseDate, 'day');
+
+      // Solo contar si está en los últimos 7 días (0-6 días atrás)
       if (daysDiff >= 0 && daysDiff < 7) {
-        // Obtener día de la semana (0=Dom, 1=Lun, ..., 6=Sáb)
-        let dayOfWeek = relapseDate.day();
-        // Convertir a índice 0=Lun, 6=Dom
-        const adjustedIndex = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-        weekData[adjustedIndex]++;
+        weekData[daysDiff]++;
       }
     });
 
@@ -402,19 +397,58 @@ const AvancesScreen = () => {
             </View>
             <Text className="text-lg font-work-black text-neutral-800">Últimos 7 Días</Text>
           </View>
-          <View className="flex-row items-end justify-between h-32">
-            {weekProgress.data.map((value, index) => (
-              <View key={index} className="flex-1 items-center">
-                <View
-                  className="bg-gradient-to-t from-primary-600 to-primary-400 rounded-t-lg mx-1"
-                  style={{ height: value > 0 ? Math.max((value / Math.max(...weekProgress.data)) * 120, 12) : 4 }}
-                />
-                <Text className="text-xs mt-2 text-neutral-500 font-work-medium">
-                  {weekProgress.labels[index]}
-                </Text>
-              </View>
-            ))}
+          <View className="flex-row items-end justify-between" style={{ height: 140 }}>
+            {(() => {
+              // Escalado adaptativo: si la diferencia máxima es grande, usamos escala log para comprimir extremos
+              const maxValue = Math.max(...weekProgress.data, 1); // evitar división por cero
+              const useLog = maxValue > 10; // umbral para cambiar a escala log
+
+              return weekProgress.data.map((value, index) => {
+                const normalized = useLog
+                  ? Math.log(value + 1) / Math.log(maxValue + 1)
+                  : value / maxValue;
+
+                const heightPercent = value > 0 ? normalized * 100 : 0;
+                const barHeight = value > 0 ? Math.max(heightPercent, 10) : 6; // porcentaje relativo dentro del contenedor
+
+                return (
+                  <View key={index} className="items-center" style={{ flex: 1 }}>
+                    <View
+                      accessible
+                      accessibilityLabel={`${weekProgress.labels[index]}: ${value}`}
+                      className="rounded-t-lg"
+                      style={{
+                        width: 18,
+                        marginHorizontal: 6,
+                        height: (barHeight / 100) * 120, // dejar margen dentro del contenedor
+                        backgroundColor: value > 0 ? '#3b82f6' : '#e5e7eb',
+                        alignSelf: 'flex-end',
+                        borderRadius: 6,
+                      }}
+                    />
+
+                    {/* valor encima de la barra cuando hay datos */}
+                    {value > 0 && (
+                      <Text className="text-xs mt-2 text-blue-600 font-work-black">
+                        {value}
+                      </Text>
+                    )}
+
+                    <Text className="text-xs mt-2 text-neutral-500 font-work-medium">
+                      {weekProgress.labels[index]}
+                    </Text>
+                  </View>
+                );
+              });
+            })()}
           </View>
+          {weekProgress.data.every(v => v === 0) && (
+            <View className="mt-4 p-3 bg-neutral-50 rounded-lg">
+              <Text className="text-sm text-neutral-600 font-work-medium text-center">
+                No hay recaídas en los últimos 7 días
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* Resumen de totales */}
