@@ -6,6 +6,7 @@ const IOS_BUNDLE = process.env.IOS_BUNDLE_IDENTIFIER || process.env.EXPO_IOS_BUN
 
 export default {
   expo: {
+    owner: "granadosbrand",
     name: "adas",
     slug: "adas",
     version: "1.0.0",
@@ -60,6 +61,9 @@ export default {
       // En producción podrías tener:
       // API_BASE_URL: process.env.API_BASE_URL,
       // ENVIRONMENT: process.env.NODE_ENV || 'development',
+      eas: {
+        projectId: "6832fa40-c52d-4916-bf1a-a54d5c3044b4"
+      }
     }
   }
 };
