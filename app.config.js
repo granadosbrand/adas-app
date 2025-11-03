@@ -1,17 +1,17 @@
-const API_BASE_URL = process.env.API_BASE_URL || 'http://10.0.2.2:3000';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://10.0.2.2:3000';
 // Package / bundle identifiers required by `expo prebuild`.
 // Prefer setting these via environment variables for CI/builds.
-const ANDROID_PACKAGE = process.env.ANDROID_PACKAGE || process.env.EXPO_ANDROID_PACKAGE || 'com.anonymous.navigationapp';
-const IOS_BUNDLE = process.env.IOS_BUNDLE_IDENTIFIER || process.env.EXPO_IOS_BUNDLE_IDENTIFIER || 'com.anonymous.navigationapp';
+const ANDROID_PACKAGE = process.env.ANDROID_PACKAGE || process.env.EXPO_ANDROID_PACKAGE || 'com.cnk.adas';
+const IOS_BUNDLE = process.env.IOS_BUNDLE_IDENTIFIER || process.env.EXPO_IOS_BUNDLE_IDENTIFIER || 'com.cnk.adas';
 
 export default {
   expo: {
-    name: "navigation-app",
-    slug: "navigation-app",
+    name: "adas",
+    slug: "adas",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "navigationapp",
+    scheme: "adas",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
