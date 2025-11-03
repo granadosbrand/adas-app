@@ -40,6 +40,16 @@ const DrawerLayout = () => {
                 }}
             />
             <Drawer.Screen
+                name="historial/index"
+                options={{
+                    drawerLabel: 'Historial',
+                    title: 'Historial Completo',
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons size={size} name="list-outline" color={color} />
+                    )
+                }}
+            />
+            <Drawer.Screen
                 name="ayuda"
                 options={{
                     drawerLabel: 'Artículos de Ayuda',

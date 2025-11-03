@@ -1,22 +1,33 @@
-import { formatRelative } from '@/lib/dateUtils';
+import { formatDayHeader } from '@/lib/dateUtils';
+import { calculateUserStats } from '@/lib/statsUtils';
 import { checkpointsService, relapsesService } from '@/services/api';
 import useUserStore from '@/store/useUserStore';
 import { Checkpoint, Relapse } from '@/types/api.types';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
+import dayjs from 'dayjs';
 import { useFocusEffect, useNavigation } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+// Tipo para agrupar relapses por día
+interface RelapsesByDay {
+  date: string; // ISO date string para el día (YYYY-MM-DD)
+  dayLabel: string; // "Hoy", "Ayer", "Lunes 18 Oct"
+  relapses: Relapse[];
+}
 
 const AvancesScreen = () => {
   const navigation = useNavigation();
   const user = useUserStore((s) => s.user);
+  const mode = useUserStore((s) => s.mode);
 
   const [relapses, setRelapses] = useState<Relapse[]>([]);
   const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filterDifficulty, setFilterDifficulty] = useState<string | null>(null);
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
@@ -65,28 +76,133 @@ const AvancesScreen = () => {
     loadData(true);
   };
 
-  // Simular progreso diario de la última semana (basado en relapses)
+  // Progreso de últimos 7 días completos (Lun-Dom)
   const getWeekProgress = () => {
-    const today = new Date();
+    const today = dayjs();
     const weekData = [0, 0, 0, 0, 0, 0, 0]; // L, M, X, J, V, S, D
+    const weekLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+    // Calcular el inicio de la semana (último lunes)
+    const startOfWeek = today.startOf('week').add(1, 'day'); // dayjs week starts on Sunday, shift to Monday
 
     relapses.forEach((relapse) => {
-      const relapseDate = new Date(relapse.occurred_at);
-      const diffTime = today.getTime() - relapseDate.getTime();
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const relapseDate = dayjs(relapse.occurred_at);
 
-      // Solo últimos 7 días
-      if (diffDays >= 0 && diffDays < 7) {
-        const dayIndex = (today.getDay() - diffDays + 7) % 7;
-        const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1; // Ajustar para L-D
+      // Solo contar si está en los últimos 7 días
+      const daysDiff = today.diff(relapseDate, 'day');
+      if (daysDiff >= 0 && daysDiff < 7) {
+        // Obtener día de la semana (0=Dom, 1=Lun, ..., 6=Sáb)
+        let dayOfWeek = relapseDate.day();
+        // Convertir a índice 0=Lun, 6=Dom
+        const adjustedIndex = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
         weekData[adjustedIndex]++;
       }
     });
 
-    return weekData;
+    return { data: weekData, labels: weekLabels };
+  };
+
+  // Agrupar relapses por día
+  const groupRelapsesByDay = (): RelapsesByDay[] => {
+    // Filtrar por dificultad si está activo
+    const filteredRelapses = filterDifficulty
+      ? relapses.filter(r => r.difficulty === filterDifficulty)
+      : relapses;
+
+    const grouped = new Map<string, Relapse[]>();
+
+    filteredRelapses.forEach((relapse) => {
+      const dateKey = dayjs(relapse.occurred_at).format('YYYY-MM-DD');
+      if (!grouped.has(dateKey)) {
+        grouped.set(dateKey, []);
+      }
+      grouped.get(dateKey)!.push(relapse);
+    });
+
+    // Convertir a array y ordenar por fecha (más reciente primero)
+    const result: RelapsesByDay[] = Array.from(grouped.entries()).map(([date, relapses]) => ({
+      date,
+      dayLabel: formatDayHeader(relapses[0].occurred_at),
+      relapses: relapses.sort((a, b) =>
+        dayjs(b.occurred_at).valueOf() - dayjs(a.occurred_at).valueOf()
+      ),
+    }));
+
+    return result.sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf());
   };
 
   const weekProgress = getWeekProgress();
+  const relapsesByDay = groupRelapsesByDay();
+  const stats = calculateUserStats(relapses, checkpoints);
+
+  // Mapeo de dificultades a colores y labels
+  const getDifficultyInfo = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return { label: 'Fácil', color: '#10b981', bgColor: '#d1fae5', icon: 'happy-outline' };
+      case 'medium':
+        return { label: 'Normal', color: '#f59e0b', bgColor: '#fef3c7', icon: 'remove-circle-outline' };
+      case 'hard':
+        return { label: 'Difícil', color: '#ef4444', bgColor: '#fee2e2', icon: 'sad-outline' };
+      default:
+        return null;
+    }
+  };
+
+  // Mensaje motivacional según progreso
+  const getMotivationalMessage = () => {
+    if (stats.totalRelapses === 0) {
+      return {
+        icon: 'rocket-outline',
+        color: '#8b5cf6',
+        bgColor: '#ede9fe',
+        title: '¡Comienza tu viaje!',
+        message: 'Registra tu progreso para ver tu evolución',
+      };
+    }
+
+    const streakDays = Math.floor(stats.currentStreakHours / 24);
+
+    if (streakDays >= 7) {
+      return {
+        icon: 'trophy-outline',
+        color: '#f59e0b',
+        bgColor: '#fef3c7',
+        title: `¡${stats.currentStreakFormatted} de progreso!`,
+        message: 'Vas por excelente camino, sigue así',
+      };
+    }
+
+    if (stats.trend === 'improving') {
+      return {
+        icon: 'trending-up-outline',
+        color: '#10b981',
+        bgColor: '#d1fae5',
+        title: '¡Mejorando!',
+        message: `Promedio: ${stats.averageDaysApart} días entre recaídas`,
+      };
+    }
+
+    if (stats.trend === 'worsening') {
+      return {
+        icon: 'heart-outline',
+        color: '#ef4444',
+        bgColor: '#fee2e2',
+        title: 'Sigue adelante',
+        message: 'Cada día es una nueva oportunidad',
+      };
+    }
+
+    return {
+      icon: 'checkmark-circle-outline',
+      color: '#06b6d4',
+      bgColor: '#cffafe',
+      title: 'Mantén el ritmo',
+      message: `Llevas ${stats.currentStreakFormatted} desde tu última recaída`,
+    };
+  };
+
+  const motivationalCard = getMotivationalMessage();
 
   if (isLoading) {
     return (
@@ -118,51 +234,227 @@ const AvancesScreen = () => {
       </View>
 
       <View className="flex-1 px-4">
+        {/* Mensaje motivacional */}
+        <View
+          className="mt-4 mb-4 rounded-xl p-4 border"
+          style={{
+            backgroundColor: motivationalCard.bgColor,
+            borderColor: motivationalCard.color + '40'
+          }}
+        >
+          <View className="flex-row items-center">
+            <Ionicons name={motivationalCard.icon as any} size={32} color={motivationalCard.color} />
+            <View className="flex-1 ml-3">
+              <Text className="text-lg font-work-black" style={{ color: motivationalCard.color }}>
+                {motivationalCard.title}
+              </Text>
+              <Text className="text-sm font-work-medium mt-1" style={{ color: motivationalCard.color }}>
+                {motivationalCard.message}
+              </Text>
+            </View>
+          </View>
+        </View>
+
         {/* Estadísticas principales */}
-        <View className="flex-row justify-between mt-4 mb-6">
+        <View className="flex-row justify-between mb-4">
           <View className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-4 flex-1 mr-2 border border-primary-200">
             <Text className="text-3xl font-work-black text-primary-600">
-              {relapses.length}
+              {stats.currentStreakFormatted}
             </Text>
             <Text className="text-primary-600 font-work-medium text-sm">
-              Total recaídas
+              Racha actual
             </Text>
           </View>
           <View className="bg-gradient-to-br from-growth-light to-secondary-100 rounded-xl p-4 flex-1 ml-2 border border-secondary-200">
             <Text className="text-3xl font-work-black text-growth-dark">
-              {checkpoints.filter((c) => c.status === 'reached').length}
+              {stats.bestStreakFormatted}
             </Text>
             <Text className="text-growth-dark font-work-medium text-sm">
-              Checkpoints logrados
+              Tu mejor racha
             </Text>
           </View>
         </View>
 
+        {/* Insights de patrones */}
+        {relapses.length >= 3 && (
+          <View className="mb-4">
+            <Text className="text-sm font-work-black text-neutral-700 mb-2 px-1">
+              💡 Tus Patrones
+            </Text>
+            <View className="flex-row flex-wrap gap-2">
+              {stats.mostCommonWeekday && (
+                <View className="bg-white rounded-xl p-3 border border-neutral-200 flex-1 min-w-[48%]">
+                  <View className="flex-row items-center mb-1">
+                    <Ionicons name="calendar-outline" size={16} color="#6b7280" />
+                    <Text className="text-xs text-neutral-500 font-work-medium ml-1">
+                      Día más común
+                    </Text>
+                  </View>
+                  <Text className="text-lg font-work-black text-neutral-800">
+                    {stats.mostCommonWeekday.day}
+                  </Text>
+                  <Text className="text-xs text-neutral-500">
+                    {stats.mostCommonWeekday.count} {stats.mostCommonWeekday.count === 1 ? 'vez' : 'veces'}
+                  </Text>
+                </View>
+              )}
+              {stats.mostCommonTimeRange && (
+                <View className="bg-white rounded-xl p-3 border border-neutral-200 flex-1 min-w-[48%]">
+                  <View className="flex-row items-center mb-1">
+                    <Ionicons name="time-outline" size={16} color="#6b7280" />
+                    <Text className="text-xs text-neutral-500 font-work-medium ml-1">
+                      Horario común
+                    </Text>
+                  </View>
+                  <Text className="text-sm font-work-black text-neutral-800">
+                    {stats.mostCommonTimeRange.range}
+                  </Text>
+                  <Text className="text-xs text-neutral-500">
+                    {stats.mostCommonTimeRange.count} {stats.mostCommonTimeRange.count === 1 ? 'vez' : 'veces'}
+                  </Text>
+                </View>
+              )}
+              {stats.difficultyPattern && (
+                <View className="bg-white rounded-xl p-3 border border-neutral-200 flex-1 min-w-[48%]">
+                  <View className="flex-row items-center mb-1">
+                    <Ionicons name="speedometer-outline" size={16} color="#6b7280" />
+                    <Text className="text-xs text-neutral-500 font-work-medium ml-1">
+                      Dificultad común
+                    </Text>
+                  </View>
+                  <Text className="text-lg font-work-black text-neutral-800">
+                    {stats.difficultyPattern.difficulty}
+                  </Text>
+                  <Text className="text-xs text-neutral-500">
+                    {stats.difficultyPattern.percentage}% de las veces
+                  </Text>
+                </View>
+              )}
+              {stats.averageDaysApart > 0 && (
+                <View className="bg-white rounded-xl p-3 border border-neutral-200 flex-1 min-w-[48%]">
+                  <View className="flex-row items-center mb-1">
+                    <Ionicons name="analytics-outline" size={16} color="#6b7280" />
+                    <Text className="text-xs text-neutral-500 font-work-medium ml-1">
+                      Promedio
+                    </Text>
+                  </View>
+                  <Text className="text-lg font-work-black text-neutral-800">
+                    {stats.averageDaysApart} días
+                  </Text>
+                  <Text className="text-xs text-neutral-500">
+                    Entre recaídas
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        )}
+
+        {/* Filtro de dificultad - solo si hay datos */}
+        {mode === 'survivor' && relapses.length > 0 && (
+          <View className="mb-4">
+            <Text className="text-sm font-work-medium text-neutral-600 mb-2">Vista rápida:</Text>
+            <View className="flex-row gap-2">
+              <Pressable
+                onPress={() => setFilterDifficulty(null)}
+                className={`px-3 py-2 rounded-lg border ${filterDifficulty === null
+                  ? 'bg-primary border-primary'
+                  : 'bg-white border-neutral-300'
+                  }`}
+              >
+                <Text className={`text-xs font-work-medium ${filterDifficulty === null ? 'text-white' : 'text-neutral-600'
+                  }`}>
+                  Todas
+                </Text>
+              </Pressable>
+              {['easy', 'medium', 'hard'].map((diff) => {
+                const info = getDifficultyInfo(diff);
+                if (!info) return null;
+                const isActive = filterDifficulty === diff;
+                return (
+                  <Pressable
+                    key={diff}
+                    onPress={() => setFilterDifficulty(diff)}
+                    className={`px-3 py-2 rounded-lg border`}
+                    style={{
+                      backgroundColor: isActive ? info.color : '#fff',
+                      borderColor: isActive ? info.color : '#d4d4d8',
+                    }}
+                  >
+                    <Text
+                      className="text-xs font-work-medium"
+                      style={{ color: isActive ? '#fff' : info.color }}
+                    >
+                      {info.label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          </View>
+        )}
+
         {/* Gráfico simple de barras */}
-        <View className="bg-white rounded-xl p-5 mb-6 border border-neutral-100 shadow-sm">
+        <View className="bg-white rounded-xl p-5 mb-4 border border-neutral-100 shadow-sm">
           <View className="flex-row items-center mb-4">
             <View className="bg-insight-light p-2 rounded-lg mr-3">
               <Ionicons name="bar-chart" size={20} color="#8b5cf6" />
             </View>
-            <Text className="text-lg font-work-black text-neutral-800">Progreso Semanal</Text>
+            <Text className="text-lg font-work-black text-neutral-800">Últimos 7 Días</Text>
           </View>
           <View className="flex-row items-end justify-between h-32">
-            {weekProgress.map((value, index) => (
+            {weekProgress.data.map((value, index) => (
               <View key={index} className="flex-1 items-center">
                 <View
                   className="bg-gradient-to-t from-primary-600 to-primary-400 rounded-t-lg mx-1"
-                  style={{ height: (value / 8) * 120, minHeight: value > 0 ? 12 : 4 }}
+                  style={{ height: value > 0 ? Math.max((value / Math.max(...weekProgress.data)) * 120, 12) : 4 }}
                 />
                 <Text className="text-xs mt-2 text-neutral-500 font-work-medium">
-                  {['L', 'M', 'X', 'J', 'V', 'S', 'D'][index]}
+                  {weekProgress.labels[index]}
                 </Text>
               </View>
             ))}
           </View>
         </View>
 
-        {relapses.length === 0 ? (
-          <View className="flex-1 justify-center items-center">
+        {/* Resumen de totales */}
+        <View className="flex-row bg-white rounded-xl p-4 border border-neutral-200 mb-4">
+          <View className="flex-1 items-center border-r border-neutral-200">
+            <Text className="text-2xl font-work-black text-neutral-800">
+              {stats.totalRelapses}
+            </Text>
+            <Text className="text-xs text-neutral-600 font-work-medium">
+              Total recaídas
+            </Text>
+          </View>
+          <View className="flex-1 items-center">
+            <Text className="text-2xl font-work-black text-growth-dark">
+              {stats.checkpointsReached}
+            </Text>
+            <Text className="text-xs text-neutral-600 font-work-medium">
+              Checkpoints
+            </Text>
+          </View>
+        </View>
+
+        {/* Botón para ver historial completo */}
+        {relapses.length > 0 && (
+          <Pressable
+            onPress={() => navigation.navigate('historial/index' as never)}
+            className="bg-primary-light rounded-xl p-4 border border-primary-200 flex-row items-center justify-between active:bg-primary-200"
+          >
+            <View className="flex-row items-center">
+              <Ionicons name="list-outline" size={24} color="#4f46e5" />
+              <Text className="text-primary font-work-black text-base ml-3">
+                Ver historial completo
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#4f46e5" />
+          </Pressable>
+        )}
+
+        {relapses.length === 0 && (
+          <View className="flex-1 justify-center items-center py-8">
             <View className="bg-growth-light rounded-full p-6 mb-4">
               <Ionicons name="checkmark-circle" size={64} color="#10b981" />
             </View>
@@ -174,47 +466,6 @@ const AvancesScreen = () => {
               Sigue adelante con tu proceso.
             </Text>
           </View>
-        ) : (
-          <FlatList
-            data={relapses}
-            keyExtractor={(item) => item.id}
-            refreshControl={
-              <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} colors={['#4f46e5']} />
-            }
-            renderItem={({ item, index }) => (
-              <View className="bg-white p-4 rounded-xl mb-3 border border-neutral-200">
-                <View className="flex-row justify-between items-center">
-                  <View className="flex-1">
-                    <View className="flex-row items-center mb-1">
-                      <Ionicons
-                        name={item.planned ? 'calendar' : 'alert-circle'}
-                        size={16}
-                        color={item.planned ? '#8b5cf6' : '#ef4444'}
-                      />
-                      <Text className="text-lg font-work-medium text-neutral-800 ml-2">
-                        Recaída #{relapses.length - index}
-                      </Text>
-                    </View>
-                    <Text className="text-neutral-600 font-work-medium">
-                      {formatRelative(item.occurred_at)}
-                    </Text>
-                    {item.planned && item.difficulty && (
-                      <View className="mt-2">
-                        <Text className="text-xs text-accent-dark bg-insight-light px-2 py-1 rounded-lg self-start">
-                          Dificultad: {item.difficulty}
-                        </Text>
-                      </View>
-                    )}
-                    {item.checkpoint_id && (
-                      <Text className="text-xs text-secondary-600 mt-1">
-                        Vinculada a checkpoint
-                      </Text>
-                    )}
-                  </View>
-                </View>
-              </View>
-            )}
-          />
         )}
       </View>
     </SafeAreaView>

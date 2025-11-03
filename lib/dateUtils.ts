@@ -3,9 +3,13 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(relativeTime);
 dayjs.extend(localizedFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.locale('es');
 
 export const parseToDate = (ts: string | number | Date | null | undefined): dayjs.Dayjs | null => {
@@ -22,7 +26,8 @@ export const parseToDate = (ts: string | number | Date | null | undefined): dayj
     }
 
     if (typeof ts === 'string') {
-        const d = dayjs(ts);
+        // Parsear como UTC y convertir a zona horaria local del usuario
+        const d = dayjs.utc(ts).local();
         return d.isValid() ? d : null;
     }
 
@@ -48,8 +53,32 @@ export const formatRelative = (ts: string | number | Date | null | undefined, no
     return d.from(nowD);
 };
 
+// Devuelve el nombre del día con formato legible: "Hoy", "Ayer", o "Lunes 18 Oct"
+export const formatDayHeader = (ts: string | number | Date | null | undefined): string => {
+    const d = parseToDate(ts);
+    if (!d) return '';
+
+    const nowD = dayjs();
+    const diffDays = nowD.startOf('day').diff(d.startOf('day'), 'day');
+
+    if (diffDays === 0) return 'Hoy';
+    if (diffDays === 1) return 'Ayer';
+    if (diffDays < 7) return d.format('dddd'); // "lunes", "martes", etc.
+
+    return d.format('D MMM YYYY'); // "18 Oct 2025"
+};
+
+// Devuelve solo la hora: "14:23"
+export const formatTimeOnly = (ts: string | number | Date | null | undefined): string => {
+    const d = parseToDate(ts);
+    if (!d) return '';
+    return d.format('HH:mm');
+};
+
 export default {
     parseToDate,
     formatTimestamp,
     formatRelative,
+    formatDayHeader,
+    formatTimeOnly,
 };
