@@ -3,6 +3,7 @@ import { Slot, SplashScreen } from 'expo-router';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import './global.css';
 
 SplashScreen.preventAutoHideAsync()
@@ -28,8 +29,10 @@ const RootLayout = () => {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Slot />
-            <Toast />
+            <SafeAreaProvider>
+                <Slot />
+                <Toast />
+            </SafeAreaProvider>
         </GestureHandlerRootView>
     )
 }
