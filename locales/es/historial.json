@@ -1,0 +1,33 @@
+{
+    "title": "Historial Completo",
+    "loading": "Cargando historial...",
+    "filters": {
+        "all": "Todas",
+        "easy": "Baja",
+        "medium": "Media",
+        "hard": "Alta"
+    },
+    "difficulty": {
+        "low": "Dificultad Baja",
+        "medium": "Dificultad Media",
+        "high": "Dificultad Alta"
+    },
+    "relapse": {
+        "singular": "recaída",
+        "plural": "recaídas",
+        "filtered": "filtradas"
+    },
+    "empty": {
+        "noRelapses": "¡Sin recaídas registradas!",
+        "noRelapsesFiltered": "No hay recaídas con este filtro",
+        "keepGoing": "Sigue adelante con tu proceso.",
+        "tryAnotherFilter": "Prueba con otro filtro para ver más resultados."
+    },
+    "relapseType": {
+        "planned": "Planeada",
+        "unplanned": "No planeada"
+    },
+    "checkpoint": {
+        "linked": "Vinculada a checkpoint"
+    }
+}

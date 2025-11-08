@@ -1,0 +1,15 @@
+{
+    "title": "Logout",
+    "alert": {
+        "title": "Logout",
+        "message": "Are you sure you want to logout?",
+        "cancel": "Cancel",
+        "confirm": "Logout"
+    },
+    "description": "Are you sure you want to logout? Your progress will be saved.",
+    "buttons": {
+        "confirm": "Confirm Logout",
+        "cancel": "Cancel"
+    },
+    "motivationalMessage": "🌱 Remember that your progress is valuable. Every step counts in your growth process."
+}

@@ -1,0 +1,10 @@
+{
+    "title": "Asistente Personal",
+    "header": "Asistente IA",
+    "description": "Próximamente tendrás acceso a un asistente de IA que te ayudará en tu proceso de reflexión y crecimiento",
+    "examples": {
+        "question1": "¿Cómo te sientes hoy?",
+        "question2": "¿Qué has aprendido de ti mismo?",
+        "response1": "Estoy aquí para acompañarte"
+    }
+}

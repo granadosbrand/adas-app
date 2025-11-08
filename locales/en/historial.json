@@ -1,0 +1,33 @@
+{
+    "title": "Complete History",
+    "loading": "Loading history...",
+    "filters": {
+        "all": "All",
+        "easy": "Low",
+        "medium": "Medium",
+        "hard": "High"
+    },
+    "difficulty": {
+        "low": "Low Difficulty",
+        "medium": "Medium Difficulty",
+        "high": "High Difficulty"
+    },
+    "relapse": {
+        "singular": "relapse",
+        "plural": "relapses",
+        "filtered": "filtered"
+    },
+    "empty": {
+        "noRelapses": "No relapses registered!",
+        "noRelapsesFiltered": "No relapses with this filter",
+        "keepGoing": "Keep going with your process.",
+        "tryAnotherFilter": "Try another filter to see more results."
+    },
+    "relapseType": {
+        "planned": "Planned",
+        "unplanned": "Unplanned"
+    },
+    "checkpoint": {
+        "linked": "Linked to checkpoint"
+    }
+}

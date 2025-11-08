@@ -1,0 +1,10 @@
+{
+    "myProgress": "Mi Progreso",
+    "noPendingCheckpoint": "No hay checkpoint pendiente",
+    "registerRelapseForGoal": "Registra una recaída para generar tu próximo objetivo",
+    "evaluationMode": "Modo Evaluación",
+    "evaluationDescription": "Estás en fase de evaluación. Registra tus recaídas para establecer tu patrón base",
+    "pressToRegister": "Presiona para registrar",
+    "registerPastEvent": "Registrar evento pasado",
+    "growthMessage": "Cada paso cuenta en tu proceso de crecimiento 🌱"
+}

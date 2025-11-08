@@ -8,6 +8,7 @@ import { DrawerActions } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { useFocusEffect, useNavigation } from 'expo-router';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,6 +29,7 @@ const AvancesScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [filterDifficulty, setFilterDifficulty] = useState<string | null>(null);
+  const { t } = useTranslation('advances');
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
@@ -134,11 +136,11 @@ const AvancesScreen = () => {
   const getDifficultyInfo = (difficulty?: string) => {
     switch (difficulty) {
       case 'easy':
-        return { label: 'Fácil', color: '#10b981', bgColor: '#d1fae5', icon: 'happy-outline' };
+        return { label: t('easy'), color: '#10b981', bgColor: '#d1fae5', icon: 'happy-outline' };
       case 'medium':
-        return { label: 'Normal', color: '#f59e0b', bgColor: '#fef3c7', icon: 'remove-circle-outline' };
+        return { label: t('normal'), color: '#f59e0b', bgColor: '#fef3c7', icon: 'remove-circle-outline' };
       case 'hard':
-        return { label: 'Difícil', color: '#ef4444', bgColor: '#fee2e2', icon: 'sad-outline' };
+        return { label: t('hard'), color: '#ef4444', bgColor: '#fee2e2', icon: 'sad-outline' };
       default:
         return null;
     }
@@ -149,10 +151,10 @@ const AvancesScreen = () => {
     if (stats.totalRelapses === 0) {
       return {
         icon: 'rocket-outline',
-        color: '#8b5cf6',
+        color: '#1ca6c0',
         bgColor: '#ede9fe',
-        title: '¡Comienza tu viaje!',
-        message: 'Registra tu progreso para ver tu evolución',
+        title: t('startJourney'),
+        message: t('registerProgress'),
       };
     }
 
@@ -163,8 +165,8 @@ const AvancesScreen = () => {
         icon: 'trophy-outline',
         color: '#f59e0b',
         bgColor: '#fef3c7',
-        title: `¡${stats.currentStreakFormatted} de progreso!`,
-        message: 'Vas por excelente camino, sigue así',
+        title: t('progressStreak', { streak: stats.currentStreakFormatted }),
+        message: t('excellentPath'),
       };
     }
 
@@ -173,8 +175,8 @@ const AvancesScreen = () => {
         icon: 'trending-up-outline',
         color: '#10b981',
         bgColor: '#d1fae5',
-        title: '¡Mejorando!',
-        message: `Promedio: ${stats.averageDaysApart} días entre recaídas`,
+        title: t('improving'),
+        message: t('averageDays', { days: stats.averageDaysApart }),
       };
     }
 
@@ -183,8 +185,8 @@ const AvancesScreen = () => {
         icon: 'heart-outline',
         color: '#ef4444',
         bgColor: '#fee2e2',
-        title: 'Sigue adelante',
-        message: 'Cada día es una nueva oportunidad',
+        title: t('keepGoing'),
+        message: t('newOpportunity'),
       };
     }
 
@@ -192,8 +194,8 @@ const AvancesScreen = () => {
       icon: 'checkmark-circle-outline',
       color: '#06b6d4',
       bgColor: '#cffafe',
-      title: 'Mantén el ritmo',
-      message: `Llevas ${stats.currentStreakFormatted} desde tu última recaída`,
+      title: t('maintainRhythm'),
+      message: t('currentStreak', { streak: stats.currentStreakFormatted }),
     };
   };
 
@@ -204,14 +206,14 @@ const AvancesScreen = () => {
       <SafeAreaView className="flex-1 bg-neutral-50">
         <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
           <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
-            <Ionicons name="menu" size={20} color="#4f46e5" />
+            <Ionicons name="menu" size={20} color="#1ca6c0" />
           </Pressable>
-          <Text className="text-lg font-work-medium text-neutral-800">Mis Avances</Text>
+          <Text className="text-lg font-work-medium text-neutral-800">{t('myAdvances')}</Text>
           <View style={{ width: 32 }} />
         </View>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#4f46e5" />
-          <Text className="text-neutral-600 font-work-medium mt-4">Cargando avances...</Text>
+          <ActivityIndicator size="large" color="#1ca6c0" />
+          <Text className="text-neutral-600 font-work-medium mt-4">{t('loadingAdvances')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -222,9 +224,9 @@ const AvancesScreen = () => {
       {/* Header */}
       <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
         <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
-          <Ionicons name="menu" size={20} color="#4f46e5" />
+          <Ionicons name="menu" size={20} color="#1ca6c0" />
         </Pressable>
-        <Text className="text-lg font-work-medium text-neutral-800">Mis Avances</Text>
+        <Text className="text-lg font-work-medium text-neutral-800">{t('myAdvances')}</Text>
         <View style={{ width: 32 }} />
       </View>
 
@@ -257,7 +259,7 @@ const AvancesScreen = () => {
               {stats.currentStreakFormatted}
             </Text>
             <Text className="text-primary-600 font-work-medium text-sm">
-              Racha actual
+              {t('currentStreak')}
             </Text>
           </View>
           <View className="bg-gradient-to-br from-growth-light to-secondary-100 rounded-xl p-4 flex-1 ml-2 border border-secondary-200">
@@ -265,7 +267,7 @@ const AvancesScreen = () => {
               {stats.bestStreakFormatted}
             </Text>
             <Text className="text-growth-dark font-work-medium text-sm">
-              Tu mejor racha
+              {t('bestStreak')}
             </Text>
           </View>
         </View>
@@ -274,7 +276,7 @@ const AvancesScreen = () => {
         {relapses.length >= 3 && (
           <View className="mb-4">
             <Text className="text-sm font-work-black text-neutral-700 mb-2 px-1">
-              💡 Tus Patrones
+              {t('yourPatterns')}
             </Text>
             <View className="flex-row flex-wrap gap-2">
               {stats.mostCommonWeekday && (
@@ -282,14 +284,14 @@ const AvancesScreen = () => {
                   <View className="flex-row items-center mb-1">
                     <Ionicons name="calendar-outline" size={16} color="#6b7280" />
                     <Text className="text-xs text-neutral-500 font-work-medium ml-1">
-                      Día más común
+                      {t('mostCommonDay')}
                     </Text>
                   </View>
                   <Text className="text-lg font-work-black text-neutral-800">
                     {stats.mostCommonWeekday.day}
                   </Text>
                   <Text className="text-xs text-neutral-500">
-                    {stats.mostCommonWeekday.count} {stats.mostCommonWeekday.count === 1 ? 'vez' : 'veces'}
+                    {stats.mostCommonWeekday.count} {stats.mostCommonWeekday.count === 1 ? t('time') : t('times')}
                   </Text>
                 </View>
               )}
@@ -298,14 +300,14 @@ const AvancesScreen = () => {
                   <View className="flex-row items-center mb-1">
                     <Ionicons name="time-outline" size={16} color="#6b7280" />
                     <Text className="text-xs text-neutral-500 font-work-medium ml-1">
-                      Horario común
+                      {t('commonTime')}
                     </Text>
                   </View>
                   <Text className="text-sm font-work-black text-neutral-800">
                     {stats.mostCommonTimeRange.range}
                   </Text>
                   <Text className="text-xs text-neutral-500">
-                    {stats.mostCommonTimeRange.count} {stats.mostCommonTimeRange.count === 1 ? 'vez' : 'veces'}
+                    {stats.mostCommonTimeRange.count} {stats.mostCommonTimeRange.count === 1 ? t('time') : t('times')}
                   </Text>
                 </View>
               )}
@@ -314,7 +316,7 @@ const AvancesScreen = () => {
                   <View className="flex-row items-center mb-1">
                     <Ionicons name="speedometer-outline" size={16} color="#6b7280" />
                     <Text className="text-xs text-neutral-500 font-work-medium ml-1">
-                      Dificultad común
+                      {t('commonDifficulty')}
                     </Text>
                   </View>
                   <Text className="text-lg font-work-black text-neutral-800">
@@ -330,14 +332,14 @@ const AvancesScreen = () => {
                   <View className="flex-row items-center mb-1">
                     <Ionicons name="analytics-outline" size={16} color="#6b7280" />
                     <Text className="text-xs text-neutral-500 font-work-medium ml-1">
-                      Promedio
+                      {t('average')}
                     </Text>
                   </View>
                   <Text className="text-lg font-work-black text-neutral-800">
                     {stats.averageDaysApart} días
                   </Text>
                   <Text className="text-xs text-neutral-500">
-                    Entre recaídas
+                    {t('betweenRelapses')}
                   </Text>
                 </View>
               )}
@@ -348,7 +350,7 @@ const AvancesScreen = () => {
         {/* Filtro de dificultad - solo si hay datos */}
         {mode === 'survivor' && relapses.length > 0 && (
           <View className="mb-4">
-            <Text className="text-sm font-work-medium text-neutral-600 mb-2">Vista rápida:</Text>
+            <Text className="text-sm font-work-medium text-neutral-600 mb-2">{t('quickView')}</Text>
             <View className="flex-row gap-2">
               <Pressable
                 onPress={() => setFilterDifficulty(null)}
@@ -359,7 +361,7 @@ const AvancesScreen = () => {
               >
                 <Text className={`text-xs font-work-medium ${filterDifficulty === null ? 'text-white' : 'text-neutral-600'
                   }`}>
-                  Todas
+                  {t('all')}
                 </Text>
               </Pressable>
               {['easy', 'medium', 'hard'].map((diff) => {
@@ -393,9 +395,9 @@ const AvancesScreen = () => {
         <View className="bg-white rounded-xl p-5 mb-4 border border-neutral-100 shadow-sm">
           <View className="flex-row items-center mb-4">
             <View className="bg-insight-light p-2 rounded-lg mr-3">
-              <Ionicons name="bar-chart" size={20} color="#8b5cf6" />
+              <Ionicons name="bar-chart" size={20} color="#1ca6c0" />
             </View>
-            <Text className="text-lg font-work-black text-neutral-800">Últimos 7 Días</Text>
+            <Text className="text-lg font-work-black text-neutral-800">{t('last7Days')}</Text>
           </View>
           <View className="flex-row items-end justify-between" style={{ height: 140 }}>
             {(() => {
@@ -445,7 +447,7 @@ const AvancesScreen = () => {
           {weekProgress.data.every(v => v === 0) && (
             <View className="mt-4 p-3 bg-neutral-50 rounded-lg">
               <Text className="text-sm text-neutral-600 font-work-medium text-center">
-                No hay recaídas en los últimos 7 días
+                {t('noRelapses7Days')}
               </Text>
             </View>
           )}
@@ -458,7 +460,7 @@ const AvancesScreen = () => {
               {stats.totalRelapses}
             </Text>
             <Text className="text-xs text-neutral-600 font-work-medium">
-              Total recaídas
+              {t('totalRelapses')}
             </Text>
           </View>
           <View className="flex-1 items-center">
@@ -466,7 +468,7 @@ const AvancesScreen = () => {
               {stats.checkpointsReached}
             </Text>
             <Text className="text-xs text-neutral-600 font-work-medium">
-              Checkpoints
+              {t('checkpoints')}
             </Text>
           </View>
         </View>
@@ -478,12 +480,12 @@ const AvancesScreen = () => {
             className="bg-primary-light rounded-xl p-4 border border-primary-200 flex-row items-center justify-between active:bg-primary-200"
           >
             <View className="flex-row items-center">
-              <Ionicons name="list-outline" size={24} color="#4f46e5" />
+              <Ionicons name="list-outline" size={24} color="#1ca6c0" />
               <Text className="text-primary font-work-black text-base ml-3">
-                Ver historial completo
+                {t('viewFullHistory')}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#4f46e5" />
+            <Ionicons name="chevron-forward" size={20} color="#1ca6c0" />
           </Pressable>
         )}
 
@@ -493,11 +495,10 @@ const AvancesScreen = () => {
               <Ionicons name="checkmark-circle" size={64} color="#10b981" />
             </View>
             <Text className="text-lg text-neutral-800 text-center font-work-black mb-2">
-              ¡Excelente trabajo!
+              {t('excellentWork')}
             </Text>
             <Text className="text-neutral-600 text-center font-work-medium">
-              No tienes recaídas registradas aún.{'\n'}
-              Sigue adelante con tu proceso.
+              {t('noRelapsesYet')}
             </Text>
           </View>
         )}

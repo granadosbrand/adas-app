@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     Modal,
@@ -22,6 +23,7 @@ interface RelapseModalProps {
 }
 
 const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
+    const { t } = useTranslation('relapseModal');
     const user = useUserStore((s) => s.user);
     const mode = useUserStore((s) => s.mode);
     const setPendingCheckpoint = useUserStore((s) => s.setPendingCheckpoint);
@@ -55,8 +57,8 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
             try {
                 Toast.show({
                     type: 'error',
-                    text1: 'Error al registrar',
-                    text2: error?.message || 'Intenta nuevamente',
+                    text1: t('toast.errorTitle'),
+                    text2: t('toast.errorMessage'),
                     position: 'bottom',
                     visibilityTime: 3000,
                 });
@@ -77,18 +79,18 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
         // Mostrar mensaje según clasificación
         const { classification, checkpoint_reached } = data;
         let message = '';
-        let title = 'Registrado';
+        let title = t('toast.registered');
 
         console.log("data devuelta: ", data)
         if (checkpoint_reached) {
-            title = '🎉 ¡Checkpoint Alcanzado!';
-            message = `Llegaste ${classification.relation === 'early' ? 'temprano' : 'a tiempo'}`;
+            title = t('toast.checkpointReached');
+            message = classification.relation === 'early' ? t('toast.earlyArrival') : t('toast.onTimeArrival');
         } else if (classification.relation === 'missed') {
-            title = 'Checkpoint perdido';
-            message = 'No te desanimes, sigue adelante';
+            title = t('toast.checkpointMissed');
+            message = t('toast.keepGoing');
         } else {
-            title = 'Registrado exitosamente';
-            message = 'Sigue con tu progreso';
+            title = t('toast.registered');
+            message = t('toast.continueProgress');
         }
 
         try {
@@ -107,9 +109,9 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
     };
 
     const difficultyOptions: { value: RelapseDifficulty; label: string; icon: string }[] = [
-        { value: 'easy', label: 'Fácil', icon: 'happy-outline' },
-        { value: 'medium', label: 'Normal', icon: 'remove-circle-outline' },
-        { value: 'hard', label: 'Difícil', icon: 'sad-outline' },
+        { value: 'easy', label: t('difficultyOptions.easy'), icon: 'happy-outline' },
+        { value: 'medium', label: t('difficultyOptions.medium'), icon: 'remove-circle-outline' },
+        { value: 'hard', label: t('difficultyOptions.hard'), icon: 'sad-outline' },
     ];
 
     return (
@@ -124,7 +126,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                     {/* Header */}
                     <View className="flex-row items-center justify-between p-6 border-b border-neutral-200">
                         <Text className="text-2xl font-work-black text-neutral-800">
-                            Registrar Recaída
+                            {t('title')}
                         </Text>
                         <Pressable onPress={onClose} className="p-2">
                             <Ionicons name="close" size={24} color="#6b7280" />
@@ -142,10 +144,10 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                                     <Ionicons
                                         name={useCustomDateTime ? 'calendar' : 'calendar-outline'}
                                         size={20}
-                                        color="#4f46e5"
+                                        color="#1ca6c0"
                                     />
                                     <Text className="text-lg font-work-black text-neutral-800 ml-2">
-                                        Registrar evento pasado
+                                        {t('registerPastEvent')}
                                     </Text>
                                 </View>
                                 <View
@@ -162,14 +164,14 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                             {useCustomDateTime && (
                                 <>
                                     <Text className="text-neutral-600 text-sm font-work-medium mb-3">
-                                        ¿Cuándo ocurrió?
+                                        {t('whenOccurred')}
                                     </Text>
                                     <View className="flex-row gap-3">
                                         <Pressable
                                             onPress={() => setShowDatePicker(true)}
                                             className="flex-1 bg-neutral-50 border border-neutral-300 rounded-xl p-4"
                                         >
-                                            <Text className="text-neutral-500 text-xs mb-1">Fecha</Text>
+                                            <Text className="text-neutral-500 text-xs mb-1">{t('date')}</Text>
                                             <Text className="text-neutral-800 font-work-medium">
                                                 {selectedDate.toLocaleDateString('es-ES', {
                                                     day: '2-digit',
@@ -183,7 +185,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                                             onPress={() => setShowTimePicker(true)}
                                             className="flex-1 bg-neutral-50 border border-neutral-300 rounded-xl p-4"
                                         >
-                                            <Text className="text-neutral-500 text-xs mb-1">Hora</Text>
+                                            <Text className="text-neutral-500 text-xs mb-1">{t('time')}</Text>
                                             <Text className="text-neutral-800 font-work-medium">
                                                 {selectedDate.toLocaleTimeString('es-ES', {
                                                     hour: '2-digit',
@@ -225,7 +227,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                         {isSurvivorMode && (
                             <View className="mb-6">
                                 <Text className="text-lg font-work-black text-neutral-800 mb-3">
-                                    Dificultad
+                                    {t('difficulty')}
                                 </Text>
                                 <View className="flex-row gap-2">
                                     {difficultyOptions.map((option) => (
@@ -240,7 +242,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                                             <Ionicons
                                                 name={option.icon as any}
                                                 size={24}
-                                                color={difficulty === option.value ? '#4f46e5' : '#6b7280'}
+                                                color={difficulty === option.value ? '#1ca6c0' : '#6b7280'}
                                             />
                                             <Text
                                                 className={`text-xs font-work-medium mt-1 ${difficulty === option.value ? 'text-primary' : 'text-neutral-600'
@@ -258,8 +260,8 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                         <View className="bg-insight-light rounded-xl p-4 mb-6">
                             <Text className="text-accent-dark text-sm font-work-medium">
                                 💡 {useCustomDateTime
-                                    ? 'Asegúrate de seleccionar la fecha y hora correctas del evento'
-                                    : 'Se registrará en el momento actual. Activa "evento pasado" si ocurrió antes'}
+                                    ? t('infoMessages.pastEvent')
+                                    : t('infoMessages.currentTime')}
                             </Text>
                         </View>
                     </ScrollView>
@@ -275,7 +277,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                                 <ActivityIndicator color="#fff" />
                             ) : (
                                 <Text className="text-white font-work-black text-lg">
-                                    Registrar
+                                    {t('buttons.register')}
                                 </Text>
                             )}
                         </Pressable>
@@ -285,7 +287,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
                             className="bg-neutral-100 rounded-xl py-4 items-center active:opacity-80"
                         >
                             <Text className="text-neutral-700 font-work-black text-lg">
-                                Cancelar
+                                {t('buttons.cancel')}
                             </Text>
                         </Pressable>
                     </View>

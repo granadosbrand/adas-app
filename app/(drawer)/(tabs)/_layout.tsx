@@ -1,16 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default function TabLayout() {
+    const { t } = useTranslation('drawer');
     return (
         <Tabs screenOptions={{
-            tabBarActiveTintColor: '#4f46e5', // primary ADAS
-            tabBarInactiveTintColor: '#6b7280', // neutral-500
+            tabBarActiveTintColor: '#1ca6c0',
+            tabBarInactiveTintColor: '#6b7280',
             tabBarStyle: {
                 backgroundColor: '#ffffff',
                 borderTopWidth: 1,
                 borderTopColor: '#e5e7eb',
-                shadowColor: '#4f46e5',
+                shadowColor: '#1ca6c0',
                 shadowOffset: { width: 0, height: -1 },
                 shadowOpacity: 0.1,
                 shadowRadius: 3,
@@ -20,7 +22,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="asistente"
                 options={{
-                    title: 'Asistente',
+                    title: t('tabs.assistant'),
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons size={size} name="chatbubble-outline" color={color} />
                     ),
@@ -30,7 +32,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="home"
                 options={{
-                    title: 'Inicio',
+                    title: t('home'),
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons size={size} name="home" color={color} />
                     ),
@@ -40,7 +42,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="avances"
                 options={{
-                    title: 'Avances',
+                    title: t('tabs.advances'),
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons size={size} name="stats-chart-outline" color={color} />
                     ),

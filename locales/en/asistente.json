@@ -1,0 +1,10 @@
+{
+    "title": "AI Assistant",
+    "header": "AI Assistant",
+    "description": "Soon you will have access to an AI assistant that will help you in your process of reflection and growth",
+    "examples": {
+        "question1": "How are you feeling today?",
+        "question2": "What have you learned about yourself?",
+        "response1": "I'm here to accompany you"
+    }
+}

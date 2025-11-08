@@ -1,0 +1,15 @@
+{
+    "title": "Cerrar Sesión",
+    "alert": {
+        "title": "Cerrar Sesión",
+        "message": "¿Estás seguro que deseas cerrar sesión?",
+        "cancel": "Cancelar",
+        "confirm": "Cerrar Sesión"
+    },
+    "description": "¿Estás seguro que deseas cerrar sesión? Tus progresos se mantendrán guardados.",
+    "buttons": {
+        "confirm": "Confirmar Cierre de Sesión",
+        "cancel": "Cancelar"
+    },
+    "motivationalMessage": "🌱 Recuerda que tu progreso es valioso. Cada paso cuenta en tu proceso de crecimiento."
+}

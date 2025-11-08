@@ -1,0 +1,32 @@
+{
+    "title": "Registrar Recaída",
+    "registerPastEvent": "Registrar evento pasado",
+    "whenOccurred": "¿Cuándo ocurrió?",
+    "date": "Fecha",
+    "time": "Hora",
+    "difficulty": "Dificultad",
+    "difficultyOptions": {
+        "easy": "Fácil",
+        "medium": "Normal",
+        "hard": "Difícil"
+    },
+    "infoMessages": {
+        "currentTime": "Se registrará en el momento actual. Activa \"evento pasado\" si ocurrió antes",
+        "pastEvent": "Asegúrate de seleccionar la fecha y hora correctas del evento"
+    },
+    "buttons": {
+        "register": "Registrar",
+        "cancel": "Cancelar"
+    },
+    "toast": {
+        "errorTitle": "Error al registrar",
+        "errorMessage": "Intenta nuevamente",
+        "checkpointReached": "🎉 ¡Checkpoint Alcanzado!",
+        "checkpointMissed": "Checkpoint perdido",
+        "registered": "Registrado exitosamente",
+        "earlyArrival": "Llegaste temprano",
+        "onTimeArrival": "Llegaste a tiempo",
+        "keepGoing": "No te desanimes, sigue adelante",
+        "continueProgress": "Sigue con tu progreso"
+    }
+}

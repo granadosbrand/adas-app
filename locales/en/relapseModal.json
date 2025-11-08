@@ -1,0 +1,32 @@
+{
+    "title": "Register Relapse",
+    "registerPastEvent": "Register past event",
+    "whenOccurred": "When did it happen?",
+    "date": "Date",
+    "time": "Time",
+    "difficulty": "Difficulty",
+    "difficultyOptions": {
+        "easy": "Easy",
+        "medium": "Normal",
+        "hard": "Hard"
+    },
+    "infoMessages": {
+        "currentTime": "Will be registered at the current time. Enable \"past event\" if it happened earlier",
+        "pastEvent": "Make sure to select the correct date and time of the event"
+    },
+    "buttons": {
+        "register": "Register",
+        "cancel": "Cancel"
+    },
+    "toast": {
+        "errorTitle": "Registration Error",
+        "errorMessage": "Try again",
+        "checkpointReached": "🎉 Checkpoint Reached!",
+        "checkpointMissed": "Checkpoint missed",
+        "registered": "Successfully registered",
+        "earlyArrival": "You arrived early",
+        "onTimeArrival": "You arrived on time",
+        "keepGoing": "Don't get discouraged, keep going",
+        "continueProgress": "Continue with your progress"
+    }
+}

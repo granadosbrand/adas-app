@@ -5,6 +5,7 @@ import { Relapse, RelapseDifficulty } from '@/types/api.types';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,6 +20,7 @@ interface DifficultyInfo {
 }
 
 export default function HistorialScreen() {
+    const { t } = useTranslation('historial');
     const user = useUserStore((s) => s.user);
     const [relapses, setRelapses] = useState<Relapse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -84,15 +86,15 @@ export default function HistorialScreen() {
 
     const getDifficultyInfo = (difficulty: RelapseDifficulty | undefined): DifficultyInfo | null => {
         const difficultyMap: Record<string, DifficultyInfo> = {
-            easy: { label: 'Dificultad Baja', color: '#10b981', bgColor: '#d1fae5', icon: 'speedometer' },
+            easy: { label: t('difficulty.low'), color: '#10b981', bgColor: '#d1fae5', icon: 'speedometer' },
             medium: {
-                label: 'Dificultad Media',
+                label: t('difficulty.medium'),
                 color: '#f59e0b',
                 bgColor: '#fef3c7',
                 icon: 'speedometer',
             },
             hard: {
-                label: 'Dificultad Alta',
+                label: t('difficulty.high'),
                 color: '#ef4444',
                 bgColor: '#fee2e2',
                 icon: 'flame',
@@ -104,17 +106,17 @@ export default function HistorialScreen() {
 
     // Opciones de filtro
     const filterOptions: { value: DifficultyFilter; label: string; icon: string }[] = [
-        { value: 'all', label: 'Todas', icon: 'list' },
-        { value: 'easy', label: 'Baja', icon: 'speedometer' },
-        { value: 'medium', label: 'Media', icon: 'speedometer' },
-        { value: 'hard', label: 'Alta', icon: 'flame' },
+        { value: 'all', label: t('filters.all'), icon: 'list' },
+        { value: 'easy', label: t('filters.easy'), icon: 'speedometer' },
+        { value: 'medium', label: t('filters.medium'), icon: 'speedometer' },
+        { value: 'hard', label: t('filters.hard'), icon: 'flame' },
     ];
 
     if (isLoading) {
         return (
             <SafeAreaView className="flex-1 bg-neutral-50 justify-center items-center">
-                <ActivityIndicator size="large" color="#4f46e5" />
-                <Text className="text-neutral-600 mt-4 font-work-medium">Cargando historial...</Text>
+                <ActivityIndicator size="large" color="#1ca6c0" />
+                <Text className="text-neutral-600 mt-4 font-work-medium">{t('loading')}</Text>
             </SafeAreaView>
         );
     }
@@ -124,7 +126,7 @@ export default function HistorialScreen() {
             {/* Header con filtros */}
             <View className="bg-white px-5 pt-4 pb-3 border-b border-neutral-200">
                 <Text className="text-2xl font-work-black text-neutral-800 mb-4">
-                    Historial Completo
+                    {t('title')}
                 </Text>
 
                 {/* Filtro por dificultad */}
@@ -136,14 +138,14 @@ export default function HistorialScreen() {
                                 key={option.value}
                                 onPress={() => setDifficultyFilter(option.value)}
                                 className={`flex-row items-center px-3 py-2 rounded-lg border ${isActive
-                                        ? 'bg-primary-light border-primary'
-                                        : 'bg-white border-neutral-300'
+                                    ? 'bg-primary-light border-primary'
+                                    : 'bg-white border-neutral-300'
                                     }`}
                             >
                                 <Ionicons
                                     name={option.icon as any}
                                     size={16}
-                                    color={isActive ? '#4f46e5' : '#6b7280'}
+                                    color={isActive ? '#1ca6c0' : '#6b7280'}
                                 />
                                 <Text
                                     className={`ml-1 text-sm font-work-medium ${isActive ? 'text-primary' : 'text-neutral-600'
@@ -160,8 +162,8 @@ export default function HistorialScreen() {
                 <View className="mt-3 flex-row items-center">
                     <Ionicons name="information-circle" size={16} color="#6b7280" />
                     <Text className="text-xs text-neutral-600 font-work-medium ml-1">
-                        {filteredRelapses.length} {filteredRelapses.length === 1 ? 'recaída' : 'recaídas'}
-                        {difficultyFilter !== 'all' && ' filtradas'}
+                        {filteredRelapses.length} {filteredRelapses.length === 1 ? t('relapse.singular') : t('relapse.plural')}
+                        {difficultyFilter !== 'all' && ` ${t('relapse.filtered')}`}
                     </Text>
                 </View>
             </View>
@@ -174,13 +176,13 @@ export default function HistorialScreen() {
                     </View>
                     <Text className="text-lg text-neutral-800 text-center font-work-black mb-2">
                         {difficultyFilter === 'all'
-                            ? '¡Sin recaídas registradas!'
-                            : 'No hay recaídas con este filtro'}
+                            ? t('empty.noRelapses')
+                            : t('empty.noRelapsesFiltered')}
                     </Text>
                     <Text className="text-neutral-600 text-center font-work-medium">
                         {difficultyFilter === 'all'
-                            ? 'Sigue adelante con tu proceso.'
-                            : 'Prueba con otro filtro para ver más resultados.'}
+                            ? t('empty.keepGoing')
+                            : t('empty.tryAnotherFilter')}
                     </Text>
                 </View>
             ) : (
@@ -192,7 +194,7 @@ export default function HistorialScreen() {
                         <RefreshControl
                             refreshing={isRefreshing}
                             onRefresh={handleRefresh}
-                            colors={['#4f46e5']}
+                            colors={['#1ca6c0']}
                         />
                     }
                     renderItem={({ item: dayGroup }) => (
@@ -207,7 +209,7 @@ export default function HistorialScreen() {
                                 <View className="flex-1 h-px bg-neutral-200 ml-3" />
                                 <Text className="text-neutral-500 text-xs font-work-medium ml-3">
                                     {dayGroup.relapses.length}{' '}
-                                    {dayGroup.relapses.length === 1 ? 'recaída' : 'recaídas'}
+                                    {dayGroup.relapses.length === 1 ? t('relapse.singular') : t('relapse.plural')}
                                 </Text>
                             </View>
 
@@ -257,10 +259,10 @@ export default function HistorialScreen() {
                                                     <Ionicons
                                                         name={relapse.planned ? 'calendar' : 'alert-circle-outline'}
                                                         size={14}
-                                                        color={relapse.planned ? '#8b5cf6' : '#6b7280'}
+                                                        color={relapse.planned ? '#1ca6c0' : '#6b7280'}
                                                     />
                                                     <Text className="text-xs text-neutral-600 font-work-medium ml-1">
-                                                        {relapse.planned ? 'Planeada' : 'No planeada'}
+                                                        {relapse.planned ? t('relapseType.planned') : t('relapseType.unplanned')}
                                                     </Text>
                                                 </View>
 
@@ -269,7 +271,7 @@ export default function HistorialScreen() {
                                                     <View className="flex-row items-center mt-2">
                                                         <Ionicons name="checkmark-circle" size={14} color="#10b981" />
                                                         <Text className="text-xs text-secondary-600 font-work-medium ml-1">
-                                                            Vinculada a checkpoint
+                                                            {t('checkpoint.linked')}
                                                         </Text>
                                                     </View>
                                                 )}

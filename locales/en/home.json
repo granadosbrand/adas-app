@@ -1,0 +1,10 @@
+{
+    "myProgress": "My Progress",
+    "noPendingCheckpoint": "No pending checkpoint",
+    "registerRelapseForGoal": "Register a relapse to generate your next goal",
+    "evaluationMode": "Evaluation Mode",
+    "evaluationDescription": "You are in evaluation phase. Register your relapses to establish your baseline pattern",
+    "pressToRegister": "Press to register",
+    "registerPastEvent": "Register past event",
+    "growthMessage": "Every step counts in your growth process 🌱"
+}

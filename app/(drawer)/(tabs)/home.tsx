@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,6 +17,7 @@ const HomeScreen = () => {
     const pendingCheckpoint = useUserStore((s) => s.pendingCheckpoint);
 
     const [showPastEventModal, setShowPastEventModal] = useState(false);
+    const { t } = useTranslation('home');
 
     const openDrawer = () => {
         navigation.dispatch(DrawerActions.toggleDrawer());
@@ -29,9 +31,9 @@ const HomeScreen = () => {
             {/* Header */}
             <View className="flex-row justify-between items-center px-4 py-3 bg-white border-b border-neutral-100 shadow-sm">
                 <Pressable onPress={openDrawer} className="p-2 rounded-full bg-primary-50 active:bg-primary-100">
-                    <Ionicons name="menu" size={20} color="#4f46e5" />
+                    <Ionicons name="menu" size={20} color="#1ca6c0" />
                 </Pressable>
-                <Text className="text-lg font-work-medium text-neutral-800">Mi Progreso</Text>
+                <Text className="text-lg font-work-medium text-neutral-800">{t('myProgress')}</Text>
                 <View style={{ width: 32 }} />
             </View>
 
@@ -43,28 +45,28 @@ const HomeScreen = () => {
                         <CheckpointCard checkpoint={pendingCheckpoint} />
                     )}
                     {!hasCheckpoint && isSurvivorMode && (
-                        <View className="bg-insight-light rounded-2xl p-4 border border-accent-200">
+                        <View className="bg-accent-100 rounded-2xl p-4 border border-accent-200">
                             <View className="flex-row items-center">
-                                <Ionicons name="information-circle" size={24} color="#8b5cf6" />
+                                <Ionicons name="information-circle" size={24} color="#1ca6c0" />
                                 <Text className="text-accent-dark font-work-black ml-3 flex-1">
-                                    No hay checkpoint pendiente
+                                    {t('noPendingCheckpoint')}
                                 </Text>
                             </View>
-                            <Text className="text-accent-dark/80 text-sm font-work-medium mt-2">
-                                Registra una recaída para generar tu próximo objetivo
+                            <Text className="text-accent-700 text-sm font-work-medium mt-2">
+                                {t('registerRelapseForGoal')}
                             </Text>
                         </View>
                     )}
                     {!isSurvivorMode && (
                         <View className="bg-primary-light rounded-2xl p-4 border border-primary-200">
                             <View className="flex-row items-center">
-                                <Ionicons name="bar-chart" size={24} color="#4f46e5" />
+                                <Ionicons name="bar-chart" size={24} color="#1ca6c0" />
                                 <Text className="text-primary-dark font-work-black ml-3 flex-1">
-                                    Modo Evaluación
+                                    {t('evaluationMode')}
                                 </Text>
                             </View>
                             <Text className="text-primary-dark/80 text-sm font-work-medium mt-2">
-                                Estás en fase de evaluación. Registra tus recaídas para establecer tu patrón base
+                                {t('evaluationDescription')}
                             </Text>
                         </View>
                     )}
@@ -74,7 +76,7 @@ const HomeScreen = () => {
                 <View className="items-center py-8">
                     <SetButton />
                     <Text className="text-neutral-600 font-work-medium text-sm mt-4">
-                        Presiona para registrar
+                        {t('pressToRegister')}
                     </Text>
 
                     {/* Botón para eventos pasados */}
@@ -84,7 +86,7 @@ const HomeScreen = () => {
                     >
                         <Ionicons name="calendar-outline" size={16} color="#6b7280" />
                         <Text className="text-neutral-600 font-work-medium text-xs ml-2">
-                            Registrar evento pasado
+                            {t('registerPastEvent')}
                         </Text>
                     </Pressable>
                 </View>
@@ -93,7 +95,7 @@ const HomeScreen = () => {
                 <View className="pb-6">
                     <View className="bg-growth-light rounded-2xl p-4">
                         <Text className="text-center text-growth text-sm font-work-medium">
-                            Cada paso cuenta en tu proceso de crecimiento 🌱
+                            {t('growthMessage')}
                         </Text>
                     </View>
                 </View>

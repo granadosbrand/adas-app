@@ -1,0 +1,12 @@
+{
+    "home": "Home",
+    "myProfile": "My Profile",
+    "fullHistory": "Full History",
+    "helpArticles": "Help Articles",
+    "contact": "Contact",
+    "logout": "Logout",
+    "tabs": {
+        "assistant": "Assistant",
+        "advances": "Progress"
+    }
+}

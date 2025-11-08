@@ -166,7 +166,7 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
     const getGradientColors = (): [string, string] => {
         if (countdown !== null) return ['#ef4444', '#dc2626']; // Rojo para cancelar
         if (isSubmitting) return ['#6b7280', '#4b5563']; // Gris para loading
-        return ['#8b5cf6', '#06b6d4']; // Normal
+        return ['#1ca6c0', '#06b6d4']; // Normal
     };
 
     const getLabel = () => {
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: SIZE / 2, // ensure shadow follows circular shape
         // Shadow + border to make the button stand out
-        shadowColor: '#8b5cf6',
+        shadowColor: '#1ca6c0',
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.12,
         shadowRadius: 18,

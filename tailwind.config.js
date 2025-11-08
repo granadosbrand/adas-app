@@ -4,7 +4,7 @@ module.exports = {
     "./App.tsx",
     "./components/**/*.{js,jsx,ts,tsx}",
     "./app/**/*.{js,jsx,ts,tsx}",
-    "./presentation/**/*.{js,jsx,ts,tsx}"
+    "./presentation/**/*.{js,jsx,ts,tsx}",
   ],
   presets: [require("nativewind/preset")],
   theme: {
@@ -15,22 +15,25 @@ module.exports = {
         'work-medium': ['WorkSans-Medium', 'sans-serif'],
       },
       colors: {
-        // Azul Serenidad - Primary (confianza y estabilidad)
+        // 🌊 Turquesa Sereno - Primary
         primary: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5', // principal
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
-          DEFAULT: '#4f46e5',
+          50:  '#E9F9FC',
+          100: '#D2F3F9',
+          200: '#A6E6F2',
+          300: '#79DAEC',
+          400: '#4DCEE5',
+          500: '#20C2DF',
+          600: '#1CA6C0', // principal
+          700: '#168497',
+          800: '#116574',
+          900: '#0C4650',
+          950: '#082E35',
+          DEFAULT: '#1CA7C0',
+          light: '#D2F3F9',
+          dark: '#168497',
         },
-        // Verde Crecimiento - Secondary (progreso y esperanza)
+
+        // 🌿 Verde Crecimiento - Secondary
         secondary: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -44,8 +47,11 @@ module.exports = {
           900: '#064e3b',
           950: '#022c22',
           DEFAULT: '#10b981',
+          light: '#d1fae5',
+          dark: '#047857',
         },
-        // Ámbar Calidez - Tertiary (calidez y optimismo)
+
+        // ☀️ Ámbar Calidez - Tertiary
         tertiary: {
           50: '#fffbeb',
           100: '#fef3c7',
@@ -59,8 +65,11 @@ module.exports = {
           900: '#78350f',
           950: '#451a03',
           DEFAULT: '#f59e0b',
+          light: '#fde68a',
+          dark: '#b45309',
         },
-        // Púrpura Introspección - Accent (análisis y reflexión)
+
+        // 🔮 Púrpura Introspección - Accent
         accent: {
           50: '#f5f3ff',
           100: '#ede9fe',
@@ -74,42 +83,48 @@ module.exports = {
           900: '#4c1d95',
           950: '#2e1065',
           DEFAULT: '#8b5cf6',
+          light: '#ede9fe',
+          dark: '#6d28d9',
         },
-        // Grises Empáticos - Neutrals
+
+        // ⚫ Grises Empáticos - Neutrals
         neutral: {
           50: '#f9fafb',
           100: '#f3f4f6',
           200: '#e5e7eb',
           300: '#d1d5db',
           400: '#9ca3af',
-          500: '#6b7280',
+          500: '#6b7280', // principal
           600: '#4b5563',
           700: '#374151',
           800: '#1f2937',
           900: '#111827',
           DEFAULT: '#6b7280',
+          light: '#f3f4f6',
+          dark: '#374151',
         },
-        // Estados específicos de ADAS
+
+        // 🧩 Estados específicos de ADAS
         growth: {
-          DEFAULT: '#10b981', // Verde crecimiento
+          DEFAULT: '#10b981',
           dark: '#059669',
           light: '#d1fae5',
         },
         insight: {
-          DEFAULT: '#8b5cf6', // Púrpura introspección
+          DEFAULT: '#8b5cf6',
           dark: '#7c3aed',
           light: '#ede9fe',
         },
         warmth: {
-          DEFAULT: '#f59e0b', // Ámbar calidez
+          DEFAULT: '#f59e0b',
           dark: '#d97706',
           light: '#fef3c7',
         },
         emergency: {
-          DEFAULT: '#dc2626', // Rojo consciente (uso mínimo)
+          DEFAULT: '#dc2626',
           dark: '#b91c1c',
           light: '#fef2f2',
-        }
+        },
       },
     },
   },
