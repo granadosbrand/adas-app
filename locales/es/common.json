@@ -1,0 +1,19 @@
+{
+    "welcome": "Bienvenido",
+    "settings": "Configuraciones",
+    "home": "Inicio",
+    "help": "Ayuda",
+    "contact": "Contacto",
+    "logout": "Cerrar sesión",
+    "history": "Historial",
+    "schedule": "Horario",
+    "user": "Usuario",
+    "assistant": "Asistente",
+    "advances": "Avances",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "selectLanguage": "Seleccionar Idioma",
+    "cancel": "Cancelar",
+    "error": "Error"
+}

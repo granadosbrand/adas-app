@@ -1,4 +1,4 @@
-package com.anonymous.navigationapp
+package com.cnk.adas
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

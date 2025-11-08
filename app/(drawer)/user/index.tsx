@@ -1,3 +1,4 @@
+import LanguageSelector from '@/components/shared/LanguageSelector';
 import useUserStore from '@/store/useUserStore';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
@@ -10,6 +11,11 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-neutral-50">
       <View className="flex-1 px-6">
+        {/* Language Selector */}
+        <View className="absolute top-0 right-0 z-10">
+          <LanguageSelector />
+        </View>
+
         {/* Header con avatar */}
         <View className="items-center pt-8 pb-6">
           <View className="bg-primary rounded-full h-24 w-24 items-center justify-center mb-4 shadow-lg">

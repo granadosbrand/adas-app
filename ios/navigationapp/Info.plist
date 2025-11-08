@@ -27,8 +27,8 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>navigationapp</string>
-          <string>com.anonymous.navigationapp</string>
+          <string>adas</string>
+          <string>com.cnk.adas</string>
         </array>
       </dict>
     </array>

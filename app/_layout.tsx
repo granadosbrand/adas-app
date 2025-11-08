@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import '../i18n'; // Agrega esta línea para inicializar i18n
 import './global.css';
 
 SplashScreen.preventAutoHideAsync()

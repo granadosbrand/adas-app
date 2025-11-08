@@ -1,0 +1,19 @@
+{
+    "welcome": "Welcome",
+    "settings": "Settings",
+    "home": "Home",
+    "help": "Help",
+    "contact": "Contact",
+    "logout": "Logout",
+    "history": "History",
+    "schedule": "Schedule",
+    "user": "User",
+    "assistant": "Assistant",
+    "advances": "Advances",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "selectLanguage": "Select Language",
+    "cancel": "Cancel",
+    "error": "Error"
+}

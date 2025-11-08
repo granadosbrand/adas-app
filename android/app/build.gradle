@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.navigationapp'
+    namespace 'com.cnk.adas'
     defaultConfig {
-        applicationId 'com.anonymous.navigationapp'
+        applicationId 'com.cnk.adas'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

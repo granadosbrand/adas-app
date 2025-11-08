@@ -1,8 +1,10 @@
+import LanguageSelector from '@/components/shared/LanguageSelector';
 import { usersService } from '@/services/api';
 import useUserStore from '@/store/useUserStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
     Keyboard,
@@ -26,13 +28,15 @@ const AuthScreen = () => {
     const setUser = useUserStore((s) => s.setUser);
     const router = useRouter();
 
+    const { t } = useTranslation(['auth', 'common']);
+
     const handleCreateUser = async () => {
         if (!username.trim()) {
             try {
                 Toast.show({
                     type: 'error',
-                    text1: 'Error',
-                    text2: 'Ingresa un nombre de usuario',
+                    text1: t('common:error'),
+                    text2: t('auth:enterUsernameError'),
                     position: 'bottom',
                     visibilityTime: 2000,
                 });
@@ -52,8 +56,8 @@ const AuthScreen = () => {
             try {
                 Toast.show({
                     type: 'error',
-                    text1: 'Error al crear usuario',
-                    text2: error?.message || 'Intenta nuevamente',
+                    text1: t('auth:createUserError'),
+                    text2: error?.message || t('auth:tryAgain'),
                     position: 'bottom',
                     visibilityTime: 3000,
                 });
@@ -65,8 +69,8 @@ const AuthScreen = () => {
         try {
             Toast.show({
                 type: 'success',
-                text1: '¡Bienvenido!',
-                text2: `Usuario ${data.username} creado exitosamente`,
+                text1: t('auth:welcomeNewUser'),
+                text2: t('auth:userCreatedSuccess', { username: data.username }),
                 position: 'bottom',
                 visibilityTime: 2000,
             });
@@ -80,8 +84,8 @@ const AuthScreen = () => {
             try {
                 Toast.show({
                     type: 'error',
-                    text1: 'Error',
-                    text2: 'Ingresa tu nombre de usuario',
+                    text1: t('common:error'),
+                    text2: t('auth:enterUsernameError'),
                     position: 'bottom',
                     visibilityTime: 2000,
                 });
@@ -99,8 +103,8 @@ const AuthScreen = () => {
             try {
                 Toast.show({
                     type: 'error',
-                    text1: 'Usuario no encontrado',
-                    text2: 'Verifica tu nombre de usuario o crea una cuenta nueva',
+                    text1: t('auth:userNotFound'),
+                    text2: t('auth:verifyUsernameOrCreate'),
                     position: 'bottom',
                     visibilityTime: 3000,
                 });
@@ -119,8 +123,8 @@ const AuthScreen = () => {
         try {
             Toast.show({
                 type: 'success',
-                text1: '¡Bienvenido de vuelta!',
-                text2: `Hola ${data.user.username}`,
+                text1: t('auth:welcomeBack'),
+                text2: t('auth:helloUser', { username: data.user.username }),
                 position: 'bottom',
                 visibilityTime: 2000,
             });
@@ -137,16 +141,21 @@ const AuthScreen = () => {
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View className="flex-1 px-6 justify-center">
+                        {/* Language Selector */}
+                        <View className="absolute top-0 right-0 z-10">
+                            <LanguageSelector />
+                        </View>
+
                         {/* Logo/Icono */}
                         <View className="items-center mb-8">
                             <View className="bg-primary rounded-full p-6 mb-4">
                                 <Ionicons name="person-add" size={64} color="#fff" />
                             </View>
-                            <Text className="text-3xl font-work-black text-neutral-800 mb-2">
+                            <Text className="text-7xl font-work-black text-bold-800 mb-0">
                                 ADAS
                             </Text>
-                            <Text className="text-center text-neutral-600 font-work-medium">
-                                Sistema de Apoyo para Adicciones
+                            <Text className="text-center text-bold uppercase mt-0">
+                                {t('auth:slogan')}
                             </Text>
                         </View>
 
@@ -161,7 +170,7 @@ const AuthScreen = () => {
                                     className={`text-center font-work-medium ${isLogin ? 'text-white' : 'text-neutral-600'
                                         }`}
                                 >
-                                    Ingresar
+                                    {t('auth:login')}
                                 </Text>
                             </Pressable>
                             <Pressable
@@ -173,7 +182,7 @@ const AuthScreen = () => {
                                     className={`text-center font-work-medium ${!isLogin ? 'text-white' : 'text-neutral-600'
                                         }`}
                                 >
-                                    Crear Cuenta
+                                    {t('auth:register')}
                                 </Text>
                             </Pressable>
                         </View>
@@ -184,11 +193,11 @@ const AuthScreen = () => {
                                 // Login Form
                                 <>
                                     <Text className="text-lg font-work-black text-neutral-800 mb-4">
-                                        Ingresar con Usuario
+                                        {t('auth:loginWithUsername')}
                                     </Text>
                                     <TextInput
                                         className="bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 mb-4 font-work-medium text-neutral-800"
-                                        placeholder="Ingresa tu nombre de usuario"
+                                        placeholder={t('auth:enterUsername')}
                                         placeholderTextColor="#9ca3af"
                                         value={username}
                                         onChangeText={setUsername}
@@ -204,7 +213,7 @@ const AuthScreen = () => {
                                             <ActivityIndicator color="#fff" />
                                         ) : (
                                             <Text className="text-white font-work-black text-lg">
-                                                Ingresar
+                                                {t('auth:login')}
                                             </Text>
                                         )}
                                     </Pressable>
@@ -213,11 +222,11 @@ const AuthScreen = () => {
                                 // Register Form
                                 <>
                                     <Text className="text-lg font-work-black text-neutral-800 mb-4">
-                                        Crear Nueva Cuenta
+                                        {t('auth:createNewAccount')}
                                     </Text>
                                     <TextInput
                                         className="bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 mb-4 font-work-medium text-neutral-800"
-                                        placeholder="Elige un nombre de usuario"
+                                        placeholder={t('auth:chooseUsername')}
                                         placeholderTextColor="#9ca3af"
                                         value={username}
                                         onChangeText={setUsername}
@@ -233,13 +242,13 @@ const AuthScreen = () => {
                                             <ActivityIndicator color="#fff" />
                                         ) : (
                                             <Text className="text-white font-work-black text-lg">
-                                                Crear Cuenta
+                                                {t('auth:register')}
                                             </Text>
                                         )}
                                     </Pressable>
                                     <View className="mt-4 bg-insight-light p-3 rounded-lg">
                                         <Text className="text-accent-dark text-sm font-work-medium">
-                                            💡 Guarda tu nombre de usuario para futuras sesiones
+                                            {t('auth:saveUsernameTip')}
                                         </Text>
                                     </View>
                                 </>
@@ -249,7 +258,7 @@ const AuthScreen = () => {
                         {/* Mensaje informativo */}
                         <View className="mt-6 bg-growth-light rounded-xl p-4">
                             <Text className="text-center text-growth-dark font-work-medium">
-                                Tu privacidad es importante. No compartimos tu información.
+                                {t('auth:privacyMessage')}
                             </Text>
                         </View>
                     </View>
