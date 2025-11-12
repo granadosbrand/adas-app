@@ -10,7 +10,7 @@ import { ActivityIndicator, FlatList, Pressable, RefreshControl, Text, View } fr
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Tipos para el filtro
-type DifficultyFilter = 'all' | 'easy' | 'medium' | 'hard';
+type DifficultyFilter = 'all' | 'easy' | 'normal' | 'hard';
 
 interface DifficultyInfo {
     label: string;
@@ -87,8 +87,8 @@ export default function HistorialScreen() {
     const getDifficultyInfo = (difficulty: RelapseDifficulty | undefined): DifficultyInfo | null => {
         const difficultyMap: Record<string, DifficultyInfo> = {
             easy: { label: t('difficulty.low'), color: '#10b981', bgColor: '#d1fae5', icon: 'speedometer' },
-            medium: {
-                label: t('difficulty.medium'),
+            normal: {
+                label: t('difficulty.normal'),
                 color: '#f59e0b',
                 bgColor: '#fef3c7',
                 icon: 'speedometer',
@@ -108,7 +108,7 @@ export default function HistorialScreen() {
     const filterOptions: { value: DifficultyFilter; label: string; icon: string }[] = [
         { value: 'all', label: t('filters.all'), icon: 'list' },
         { value: 'easy', label: t('filters.easy'), icon: 'speedometer' },
-        { value: 'medium', label: t('filters.medium'), icon: 'speedometer' },
+        { value: 'normal', label: t('filters.normal'), icon: 'speedometer' },
         { value: 'hard', label: t('filters.hard'), icon: 'flame' },
     ];
 

@@ -52,3 +52,7 @@ Join our community of developers creating universal apps.
 nrogk config file 
 
 vim /home/admin/snap/ngrok/315/.config/ngrok/ngrok.yml
+
+constuir apk desarrollo
+
+eas build --platform android --profile preview

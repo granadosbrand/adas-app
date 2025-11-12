@@ -4,12 +4,12 @@
     "filters": {
         "all": "All",
         "easy": "Low",
-        "medium": "Medium",
+        "normal": "Normal",
         "hard": "High"
     },
     "difficulty": {
         "low": "Low Difficulty",
-        "medium": "Medium Difficulty",
+        "normal": "Normal Difficulty",
         "high": "High Difficulty"
     },
     "relapse": {

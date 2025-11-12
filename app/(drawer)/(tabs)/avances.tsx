@@ -137,7 +137,7 @@ const AvancesScreen = () => {
     switch (difficulty) {
       case 'easy':
         return { label: t('easy'), color: '#10b981', bgColor: '#d1fae5', icon: 'happy-outline' };
-      case 'medium':
+      case 'normal':
         return { label: t('normal'), color: '#f59e0b', bgColor: '#fef3c7', icon: 'remove-circle-outline' };
       case 'hard':
         return { label: t('hard'), color: '#ef4444', bgColor: '#fee2e2', icon: 'sad-outline' };
@@ -364,7 +364,7 @@ const AvancesScreen = () => {
                   {t('all')}
                 </Text>
               </Pressable>
-              {['easy', 'medium', 'hard'].map((diff) => {
+              {['easy', 'normal', 'hard'].map((diff) => {
                 const info = getDifficultyInfo(diff);
                 if (!info) return null;
                 const isActive = filterDifficulty === diff;

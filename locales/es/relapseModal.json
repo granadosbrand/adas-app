@@ -7,7 +7,7 @@
     "difficulty": "Dificultad",
     "difficultyOptions": {
         "easy": "Fácil",
-        "medium": "Normal",
+        "normal": "Normal",
         "hard": "Difícil"
     },
     "infoMessages": {

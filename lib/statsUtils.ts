@@ -207,7 +207,7 @@ const getDifficultyPattern = (relapses: Relapse[]): { difficulty: string; count:
 
     if (!mostCommonDiff) return null;
 
-    const diffLabels: Record<string, string> = { easy: 'Fácil', medium: 'Normal', hard: 'Difícil' };
+    const diffLabels: Record<string, string> = { easy: 'Fácil', normal: 'Normal', hard: 'Difícil' };
 
     return {
         difficulty: diffLabels[mostCommonDiff[0]] || mostCommonDiff[0],
