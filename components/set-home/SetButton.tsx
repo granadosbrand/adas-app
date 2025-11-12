@@ -96,11 +96,12 @@ const SetButton = ({ color: _color = 'primary', variant: _variant = 'contained',
 
         const { data, error } = await relapsesService.createRelapse(user.id, {
             occurred_at: new Date().toISOString(),
-            difficulty: isSurvivorMode ? 'medium' : undefined,
+            difficulty: isSurvivorMode ? 'normal' : undefined,
         });
 
         setIsSubmitting(false);
 
+        console.log('Relapse submission response:', { data, error });
         if (error || !data) {
             try {
                 Toast.show({

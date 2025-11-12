@@ -33,7 +33,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [useCustomDateTime, setUseCustomDateTime] = useState(false);
-    const [difficulty, setDifficulty] = useState<RelapseDifficulty>('medium');
+    const [difficulty, setDifficulty] = useState<RelapseDifficulty>('normal');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isSurvivorMode = mode === 'survivor';
@@ -54,6 +54,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
         setIsSubmitting(false);
 
         if (error || !data) {
+            console.error('Relapse submission error:', error);
             try {
                 Toast.show({
                     type: 'error',
@@ -110,7 +111,7 @@ const RelapseModal = ({ visible, onClose, onSuccess }: RelapseModalProps) => {
 
     const difficultyOptions: { value: RelapseDifficulty; label: string; icon: string }[] = [
         { value: 'easy', label: t('difficultyOptions.easy'), icon: 'happy-outline' },
-        { value: 'medium', label: t('difficultyOptions.medium'), icon: 'remove-circle-outline' },
+        { value: 'normal', label: t('difficultyOptions.medium'), icon: 'remove-circle-outline' },
         { value: 'hard', label: t('difficultyOptions.hard'), icon: 'sad-outline' },
     ];
 

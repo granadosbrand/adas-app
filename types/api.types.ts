@@ -67,7 +67,7 @@ export interface ModeResponse {
 // Relapse Types
 // ============================================
 
-export type RelapseDifficulty = 'easy' | 'medium' | 'hard';
+export type RelapseDifficulty = 'easy' | 'normal' | 'hard';
 
 export interface Relapse {
     id: string;
